@@ -96,7 +96,7 @@ contract Task3 with Deployable {
       }
       send(SendParameters{
         to: jet_wallet,
-        value: 100000000,
+        value: 50000000,
         mode: 0,
         bounce: false,
         body: JettonTransfer{
@@ -105,9 +105,9 @@ contract Task3 with Deployable {
           destination: msg.from,
           responseDestination: myAddress(),
           customPayload: emptyCell(),
-          forwardTonAmount: 50000000,
+          forwardTonAmount: 10000000,
           forwardPayload: emptySlice()
-        }.toCell(); 
+        }.toCell();
       }); 
     }
   }

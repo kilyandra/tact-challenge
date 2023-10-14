@@ -107,7 +107,7 @@ contract Task3 with Deployable {
           customPayload: emptyCell(),
           forwardTonAmount: 10000000,
           forwardPayload: emptySlice()
-        }.toCell();
+        }.toCell()
       }); 
     }
   }

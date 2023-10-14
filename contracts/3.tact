@@ -102,7 +102,7 @@ contract Task3 with Deployable {
           customPayload: beginCell().endCell(),
           forwardTonAmount: 50000000,
           forwardPayload: beginCell().endCell().beginParse()
-        }
+        }.toCell()
       });
     }
     else{
@@ -119,7 +119,7 @@ contract Task3 with Deployable {
           customPayload: beginCell().endCell(),
           forwardTonAmount: 50000000,
           forwardPayload: beginCell().endCell().beginParse()
-        }
+        }.toCell()
       });
     }
   } 

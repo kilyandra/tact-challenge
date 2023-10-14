@@ -87,7 +87,7 @@ contract Task3 with Deployable {
           amount = msg.amount;
         }
         else{
-          self.bAmount = self.bAmount - amount
+          self.bAmount = self.bAmount - amount;
           jet_wallet = self.jettonAddressB;
         }
       }
@@ -98,7 +98,7 @@ contract Task3 with Deployable {
           amount = msg.amount;
         }
         else{
-          self.aAmount = self.aAmount - amount
+          self.aAmount = self.aAmount - amount;
         }
       }
 

@@ -68,7 +68,6 @@ contract Task3 with Deployable {
 
   receive(msg: JettonNotification) {
     require(sender() == self.jettonAddressA || sender() == self.jettonAddressB, "Wrong jetton");
-    let price: Int = 0;
     if(msg.from == self.owner){
       if(sender() == self.jettonAddressA){
         self.aAmount = self.aAmount + msg.amount;
@@ -78,57 +77,63 @@ contract Task3 with Deployable {
       }
     }
     else{
+      let price: Int = 0;
       if(sender() == self.jettonAddressA){
         price = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
       }
       else{
         price = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
       }
-    if(price > self.bAmount){
-          price = -1;
-        }
-    }
-    if(price == -1){
-      send(SendParameters{
-        to: msg.from,
-        value: 0,
-        mode: 64,
-        bounce: false,
-        body: JettonTransfer{
-          queryId: 0,
-          amount: msg.amount,
-          destination: msg.from,
-          responseDestination: self.owner,
-          customPayload: beginCell().endCell(),
-          forwardTonAmount: 50000000,
-          forwardPayload: beginCell().endCell().beginParse()
-        }.toCell()
-      });
-    }
-    else{
-      send(SendParameters{
-        to: msg.from,
-        value: 100000000,
-        mode: 2,
-        bounce: false,
-        body: JettonTransfer{
-          queryId: 0,
-          amount: msg.amount,
-          destination: msg.from,
-          responseDestination: self.owner,
-          customPayload: beginCell().endCell(),
-          forwardTonAmount: 50000000,
-          forwardPayload: beginCell().endCell().beginParse()
-        }.toCell()
-      }); 
+      if(price > self.bAmount){
+        price = -1;
+      }
+      if(price == -1){
+        send(SendParameters{
+          to: msg.from,
+          value: 0,
+          mode: 64,
+          bounce: false,
+          body: JettonTransfer{
+            queryId: 0,
+            amount: msg.amount,
+            destination: msg.from,
+            responseDestination: self.owner,
+            customPayload: beginCell().storeUInt(0,1).endCell(),
+            forwardTonAmount: 50000000,
+            forwardPayload: beginCell().storeUInt(0,1).endCell().beginParse()
+          }.toCell()
+        });
+      }
+      else{
+        send(SendParameters{
+          to: msg.from,
+          value: 100000000,
+          mode: 2,
+          bounce: false,
+          body: JettonTransfer{
+            queryId: 0,
+            amount: msg.amount,
+            destination: msg.from,
+            responseDestination: self.owner,
+            customPayload: beginCell().storeUInt(0,1).endCell(),
+            forwardTonAmount: 50000000,
+            forwardPayload: beginCell().storeUInt(0,1).endCell().beginParse()
+          }.toCell()
+        }); 
+      }
     }
   } 
   
   get fun price(jetton: Address): Int {
-    return self.aAmount * self.decimal / self.bAmount;
+    if(jetton == self.jettonAddressA){
+      return self.aAmount * self.decimal / self.bAmount;
+    }
+    return self.bAmount * self.decimal / self.aAmount;
   }
   
   get fun balance(jetton: Address): Int {
-    return self.aAmount + self.bAmount;
-  }
+    if(jetton == self.jettonAddressA){
+      return self.aAmount;
+    }
+    return self.bAmount;
 }

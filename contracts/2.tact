@@ -10,7 +10,7 @@ import "@stdlib/deploy";
   Also, if admin contract decides to reject message (if it sends to the proxy "Refund" message with opcode=0x44),
   proxy contract needs to forward all TONs (attached to Refund message) back to the user.
   User address will be provided in Refund message body as "sender".
-  In refund transaction, it is important to have a check that the refund message came from the admin address 
+  In refund transaction, it is important to have a check that the refund message came from the admin address
 */
 
 message(0x44) Refund {
@@ -31,7 +31,7 @@ contract Task2 with Deployable {
           to: msg.sender,
           bounce: false,
           value: 0,
-          mode: SendRemainingBalance + SendIgnoreErrors,
+          mode: SendRemainingBalance + SendIgnoreErrors
       });
     }
   }

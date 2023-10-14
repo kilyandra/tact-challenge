@@ -101,9 +101,9 @@ contract Task3 with Deployable {
             amount: msg.amount,
             destination: msg.from,
             responseDestination: myAddress(),
-            customPayload: beginCell().storeUint(0,1).endCell(),
+            customPayload: emptyCell(),
             forwardTonAmount: 50000000,
-            forwardPayload: beginCell().storeUint(0,1).endCell().beginParse()
+            forwardPayload: emptySlice()
           }.toCell()
         });
       }
@@ -118,9 +118,9 @@ contract Task3 with Deployable {
             amount: price,
             destination: msg.from,
             responseDestination: myAddress(),
-            customPayload: beginCell().storeUint(0,1).endCell(),
+            customPayload: emptyCell(),
             forwardTonAmount: 50000000,
-            forwardPayload: beginCell().storeUint(0,1).endCell().beginParse()
+            forwardPayload: emptySlice()
           }.toCell()
         }); 
       }

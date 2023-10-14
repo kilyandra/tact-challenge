@@ -28,7 +28,7 @@ contract Task2 with Deployable {
   receive(msg: Refund) {
     if (sender() == self.admin){
       send(SendParameters{
-          to: self.sender(),
+          to: self.sender,
           bounce: false,
           value: 0,
           mode: SendRemainingBalance + SendIgnoreErrors
@@ -38,7 +38,7 @@ contract Task2 with Deployable {
 
   receive(msg: Slice) {
     send(SendParameters{
-        to: sender(),
+        to: msg.sender,
         bounce: false,
         value: 0,
         mode: SendRemainingBalance + SendIgnoreErrors,

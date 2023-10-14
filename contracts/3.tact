@@ -68,6 +68,7 @@ contract Task3 with Deployable {
 
   receive(msg: JettonNotification) {
     require(sender() == self.jettonAddressA || sender() == self.jettonAddressB, "Wrong jetton");
+    let price: Int = 0;
     if(msg.from == self.owner){
       if(sender() == self.jettonAddressA){
         self.aAmount = self.aAmount + msg.amount;
@@ -76,7 +77,6 @@ contract Task3 with Deployable {
         self.bAmount = self.bAmount + msg.amount;
       }
     }
-    let price: Int = 0;
     else{
       if(sender() == self.jettonAddressA){
         price = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;

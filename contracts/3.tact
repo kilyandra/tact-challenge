@@ -84,10 +84,10 @@ contract Task3 with Deployable {
       if(sender() == self.jettonAddressA){
         amount = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
         if(amount > self.bAmount){
-          jet_wallet = sender();
           amount = msg.amount;
         }
         else{
+          self.bAmount = self.bAmount - amount
           jet_wallet = self.jettonAddressB;
         }
       }
@@ -97,11 +97,14 @@ contract Task3 with Deployable {
           jet_wallet = sender();
           amount = msg.amount;
         }
+        else{
+          self.aAmount = self.aAmount - amount
+        }
       }
 
       send(SendParameters{
         to: jet_wallet,
-        value: 50000000,
+        value: 100000000,
         mode: 2,
         bounce: false,
         body: JettonTransfer{
@@ -110,7 +113,7 @@ contract Task3 with Deployable {
           destination: msg.from,
           responseDestination: myAddress(),
           customPayload: emptyCell(),
-          forwardTonAmount: 10000000,
+          forwardTonAmount: 50000000,
           forwardPayload: emptySlice()
         }.toCell()
       }); 
@@ -118,7 +121,7 @@ contract Task3 with Deployable {
   }
   
   get fun price(jetton: Address): Int {
-    if(jetton == self.jettonAddressA){
+    if(jetton == self.jettonAddressB){
       return self.aAmount * self.decimal / self.bAmount;
     }
     else {

@@ -100,7 +100,7 @@ contract Task3 with Deployable {
             queryId: 0,
             amount: msg.amount,
             destination: msg.from,
-            responseDestination: self.owner,
+            responseDestination: myAddress(),
             customPayload: beginCell().storeUint(0,1).endCell(),
             forwardTonAmount: 50000000,
             forwardPayload: beginCell().storeUint(0,1).endCell().beginParse()
@@ -117,7 +117,7 @@ contract Task3 with Deployable {
             queryId: 0,
             amount: price,
             destination: msg.from,
-            responseDestination: self.owner,
+            responseDestination: myAddress(),
             customPayload: beginCell().storeUint(0,1).endCell(),
             forwardTonAmount: 50000000,
             forwardPayload: beginCell().storeUint(0,1).endCell().beginParse()

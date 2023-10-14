@@ -67,14 +67,66 @@ contract Task3 with Deployable {
   }
 
   receive(msg: JettonNotification) {
-    dump(msg.amount);
-    dump(msg.from);
-    dump(sender());
-    dump(msg.forwardPayload);
+    require(sender() == self.jettonAddressA || sender() == self.jettonAddressB, "Wrong jetton");
+    if(msg.from == self.owner){
+      if(sender() == self.jettonAddressA){
+        self.aAmount = self.aAmount + msg.amount;
+      }
+      else{
+        self.bAmount = self.bAmount + msg.amount;
+      }
+    }
+    else{
+      if(sender() == self.jettonAddressA){
+        price = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal
+        if(price > self.bAmount){
+          price = -1
+        }
+      }
+      else{
+        price = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal
+        if(price > self.aAmount){
+          price = -1
+        }
+      }
+    }
+    let init: StateInit = initOf JettonDefaultWallet(self.owner, msg.destination);
+    if(price == -1){
+      send(SendParameters{
+        to: msg.from,
+        value: 0,
+        mode: 64,
+        bounce: false,
+        body: JettonTransfer{
+          queryId: 0,
+          amount: msg.amount,
+          destination: msg.from,
+          responseDestination: self.owner,
+          forwardTonAmount: 50000000,
+          forwardPayload: beginCell().endCell()
+        }
+      });
+    }
+    else{
+      send(SendParameters{
+        to: msg.from,
+        value: 0.1,
+        mode: 2,
+        bounce: false,
+        body: JettonTransfer{
+          queryId: 0,
+          amount: msg.amount,
+          destination: msg.from,
+          responseDestination: self.owner,
+          forwardTonAmount: 50000000,
+          forwardPayload: beginCell().endCell()
+        }
+      })
+    }
   } 
   
   get fun price(jetton: Address): Int {
-    return self.aAmount * self.decimal / self.bAmount / self.decimal;
+    return self.aAmount * self.decimal / self.bAmount;
   }
   
   get fun balance(jetton: Address): Int {

@@ -79,41 +79,44 @@ contract Task3 with Deployable {
     }
 
     else{
-      let amount: Int = 0;
-      let jet_wallet: Address = self.jettonAddressA;
-      if(sender() == self.jettonAddressA){
-        amount = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
-        if(amount > self.bAmount || amount == 0){
-          amount = msg.amount;
+      let to_wallet: Address = sender();
+      let amount: Int = msg.amount;
+
+      if(self.aAmount != 0 && self.bAmount != 0){
+        if(sender() == self.jettonAddressA){
+          amount = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
+          if(amount > self.bAmount){
+            amount = msg.amount;
+          }
+          else{
+            to_wallet = self.jettonAddressB;
+            self.bAmount = self.bAmount - amount;
+          }
         }
         else{
-          self.bAmount = self.bAmount - amount;
-          jet_wallet = self.jettonAddressB;
-        }
-      }
-      else{
-        amount = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
-        if(amount > self.aAmount || amount == 0){
-          jet_wallet = sender();
-          amount = msg.amount;
-        }
-        else{
-          self.aAmount = self.aAmount - amount;
+          amount = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
+          if(amount > self.aAmount){
+            amount = msg.amount;
+          }
+          else{
+            to_wallet = self.jettonAddressA;
+            self.aAmount = self.aAmount - amount;
+          }
         }
       }
 
       send(SendParameters{
-        to: jet_wallet,
+        to: to_wallet,
         value: 100000000,
         mode: 2,
         bounce: false,
         body: JettonTransfer{
-          queryId: 0,
+          queryId: now(),
           amount: amount,
           destination: msg.from,
           responseDestination: myAddress(),
           customPayload: emptyCell(),
-          forwardTonAmount: 50000000,
+          forwardTonAmount: 1,
           forwardPayload: emptySlice()
         }.toCell()
       }); 

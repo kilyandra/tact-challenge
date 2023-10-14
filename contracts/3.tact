@@ -11,7 +11,7 @@ import "@stdlib/deploy";
   Decimals are only needed for price accuracy. It should be set as 1e9.
   So, if smart contract has 10 of jetton A and 2 of jetton B, then after sending 1 jetton B you should receive 5 of jettons A.
 
-  Example formula for amountOfBJettonToSend in B->A swap will be
+  Example formula for amountOfAJettonToSend in B->A swap will be
   (amountOfJettonAOnContract * decimal / amountOfJettonBOnContract) * amountOfTokenBToSwap / decimal
 
   If smart contract pool doesn't have enough jettons to trade,
@@ -80,12 +80,15 @@ contract Task3 with Deployable {
       let price: Int = 0;
       if(sender() == self.jettonAddressA){
         price = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
+        if(price > self.bAmount){
+          price = -1;
+        }
       }
       else{
         price = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
-      }
-      if(price > self.bAmount){
-        price = -1;
+        if(price > self.aAmount){
+          price = -1;
+        }
       }
       if(price == -1){
         send(SendParameters{

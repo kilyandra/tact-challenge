@@ -95,8 +95,8 @@ contract Task3 with Deployable {
       if(price == -1){
         send(SendParameters{
           to: jet_wallet,
-          value: 0,
-          mode: 64,
+          value: 100000000,
+          mode: 0,
           bounce: false,
           body: JettonTransfer{
             queryId: 0,
@@ -113,7 +113,7 @@ contract Task3 with Deployable {
         send(SendParameters{
           to: jet_wallet,
           value: 100000000,
-          mode: 2,
+          mode: 0,
           bounce: false,
           body: JettonTransfer{
             queryId: 0,
@@ -133,13 +133,17 @@ contract Task3 with Deployable {
     if(jetton == self.jettonAddressB){
       return self.aAmount * self.decimal / self.bAmount;
     }
-    return self.bAmount * self.decimal / self.aAmount;
+    else {
+      return self.bAmount * self.decimal / self.aAmount;
+    }
   }
   
   get fun balance(jetton: Address): Int {
     if(jetton == self.jettonAddressA){
       return self.aAmount;
     }
-    return self.bAmount;
+    else {
+      return self.bAmount;
+    }
   }
 }

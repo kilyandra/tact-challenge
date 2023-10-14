@@ -98,9 +98,9 @@ contract Task3 with Deployable {
             amount: msg.amount,
             destination: msg.from,
             responseDestination: self.owner,
-            customPayload: beginCell().storeUInt(0,1).endCell(),
+            customPayload: beginCell().storeUint(0,1).endCell(),
             forwardTonAmount: 50000000,
-            forwardPayload: beginCell().storeUInt(0,1).endCell().beginParse()
+            forwardPayload: beginCell().storeUint(0,1).endCell().beginParse()
           }.toCell()
         });
       }
@@ -115,9 +115,9 @@ contract Task3 with Deployable {
             amount: msg.amount,
             destination: msg.from,
             responseDestination: self.owner,
-            customPayload: beginCell().storeUInt(0,1).endCell(),
+            customPayload: beginCell().storeUint(0,1).endCell(),
             forwardTonAmount: 50000000,
-            forwardPayload: beginCell().storeUInt(0,1).endCell().beginParse()
+            forwardPayload: beginCell().storeUint(0,1).endCell().beginParse()
           }.toCell()
         }); 
       }

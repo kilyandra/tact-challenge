@@ -31,7 +31,7 @@ contract Task2 with Deployable {
           to: msg.sender,
           bounce: false,
           value: 0,
-          mode: 66
+          mode: 64
       });
     }
   }
@@ -41,7 +41,7 @@ contract Task2 with Deployable {
         to: self.admin,
         bounce: false,
         value: 0,
-        mode: 66,
+        mode: 64,
         body: beginCell().storeAddress(sender()).storeRef(msg.asCell()).endCell()
     });
   }

@@ -30,6 +30,6 @@ contract Task2 with Deployable {
   }
 
   receive(msg: Slice) {
-    dump(msg)
+    dump(msg);
   }
 }

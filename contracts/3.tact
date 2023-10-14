@@ -107,7 +107,7 @@ contract Task3 with Deployable {
     else{
       send(SendParameters{
         to: msg.from,
-        value: 0.1,
+        value: 100000000,
         mode: 2,
         bounce: false,
         body: JettonTransfer{

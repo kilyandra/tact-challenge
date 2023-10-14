@@ -136,4 +136,5 @@ contract Task3 with Deployable {
       return self.aAmount;
     }
     return self.bAmount;
+  }
 }

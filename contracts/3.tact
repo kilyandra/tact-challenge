@@ -99,6 +99,7 @@ contract Task3 with Deployable {
           amount: msg.amount,
           destination: msg.from,
           responseDestination: self.owner,
+          customPayload: beginCell().endCell(),
           forwardTonAmount: 50000000,
           forwardPayload: beginCell().endCell().beginParse()
         }
@@ -115,6 +116,7 @@ contract Task3 with Deployable {
           amount: msg.amount,
           destination: msg.from,
           responseDestination: self.owner,
+          customPayload: beginCell().endCell(),
           forwardTonAmount: 50000000,
           forwardPayload: beginCell().endCell().beginParse()
         }

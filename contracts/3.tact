@@ -120,7 +120,7 @@ contract Task3 with Deployable {
           forwardTonAmount: 50000000,
           forwardPayload: beginCell().endCell().beginParse()
         }.toCell()
-      });
+      }); 
     }
   } 
   

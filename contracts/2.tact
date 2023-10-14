@@ -26,10 +26,22 @@ contract Task2 with Deployable {
   }
   
   receive(msg: Refund) {
-
+    require(sender() == self.admin);
+    send(SendParameters{
+        to: self.sender(),
+        bounce: false,
+        value: 0,
+        mode: SendRemainingBalance + SendIgnoreErrors
+    });
   }
 
   receive(msg: Slice) {
-    dump(msg);
+    send(SendParameters{
+        to: sender(),
+        bounce: false,
+        value: 0,
+        mode: SendRemainingBalance + SendIgnoreErrors,
+        body: beginCell().storeAddress(sender()).storeRef(msg).endCell()
+    });
   }
 }

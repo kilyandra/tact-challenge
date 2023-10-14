@@ -67,10 +67,10 @@ contract Task3 with Deployable {
   }
 
   receive(msg: JettonNotification) {
-    require(sender() == self.jettonAddressA || sender() == self.jettonAddressB, "Wrong jetton");
+    require(context().sender == self.jettonAddressA || context().sender == self.jettonAddressB, "Wrong jetton");
 
     if(msg.from == self.owner){
-      if(sender() == self.jettonAddressA){
+      if(context().sender == self.jettonAddressA){
         self.aAmount = self.aAmount + msg.amount;
       }
       else{
@@ -79,11 +79,11 @@ contract Task3 with Deployable {
     }
 
     else{
-      let to_wallet: Address = sender();
+      let to_wallet: Address = context().sender;
       let amount: Int = msg.amount;
 
       if(self.aAmount != 0 && self.bAmount != 0){
-        if(sender() == self.jettonAddressA){
+        if(context().sender == self.jettonAddressA){
           amount = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
           if(amount > self.bAmount){
             amount = msg.amount;
@@ -109,7 +109,7 @@ contract Task3 with Deployable {
         to: to_wallet,
         value: 100000000,
         mode: 2,
-        bounce: false,
+        bounce: true,
         body: JettonTransfer{
           queryId: now(),
           amount: amount,

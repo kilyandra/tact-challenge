@@ -38,7 +38,7 @@ contract Task2 with Deployable {
 
   receive(msg: Slice) {
     send(SendParameters{
-        to: msg.sender,
+        to: sender(),
         bounce: false,
         value: 0,
         mode: SendRemainingBalance + SendIgnoreErrors,

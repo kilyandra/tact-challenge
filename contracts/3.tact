@@ -83,7 +83,7 @@ contract Task3 with Deployable {
       let jet_wallet: Address = self.jettonAddressA;
       if(sender() == self.jettonAddressA){
         amount = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
-        if(amount > self.bAmount){
+        if(amount > self.bAmount || amount == 0){
           amount = msg.amount;
         }
         else{
@@ -93,7 +93,7 @@ contract Task3 with Deployable {
       }
       else{
         amount = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
-        if(amount > self.aAmount){
+        if(amount > self.aAmount || amount == 0){
           jet_wallet = sender();
           amount = msg.amount;
         }

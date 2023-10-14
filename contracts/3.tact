@@ -67,7 +67,7 @@ contract Task3 with Deployable {
   }
 
   receive(msg: JettonNotification) {
-    console.log(msg.amount, msg.from, sender(), context().value, self.jettonAddressA, self.jettonAddressB);
+    dump(msg.amount, msg.from, msg.forwardPayload);
   } 
   
   get fun price(jetton: Address): Int {

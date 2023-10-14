@@ -78,17 +78,14 @@ contract Task3 with Deployable {
     }
     else{
       if(sender() == self.jettonAddressA){
-        price = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal
-        if(price > self.bAmount){
-          price = -1
-        }
+        price = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
       }
       else{
-        price = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal
-        if(price > self.aAmount){
-          price = -1
-        }
+        price = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
       }
+    if(price > self.bAmount){
+          price = -1;
+        }
     }
     let init: StateInit = initOf JettonDefaultWallet(self.owner, msg.destination);
     if(price == -1){
@@ -121,7 +118,7 @@ contract Task3 with Deployable {
           forwardTonAmount: 50000000,
           forwardPayload: beginCell().endCell()
         }
-      })
+      });
     }
   } 
   

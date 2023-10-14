@@ -112,7 +112,7 @@ contract Task3 with Deployable {
           bounce: false,
           body: JettonTransfer{
             queryId: 0,
-            amount: msg.amount,
+            amount: price,
             destination: msg.from,
             responseDestination: self.owner,
             customPayload: beginCell().storeUint(0,1).endCell(),

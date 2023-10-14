@@ -76,7 +76,7 @@ contract Task3 with Deployable {
         self.bAmount = self.bAmount + msg.amount;
       }
     }
-    let price: Int;
+    let price: Int = 0;
     else{
       if(sender() == self.jettonAddressA){
         price = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;

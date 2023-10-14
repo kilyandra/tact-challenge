@@ -78,7 +78,9 @@ contract Task3 with Deployable {
     }
     else{
       let price: Int = 0;
+      let jet_wallet: Address = self.jettonAddressA;
       if(sender() == self.jettonAddressA){
+        jet_wallet = self.jettonAddressB;
         price = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
         if(price > self.bAmount){
           price = -1;
@@ -92,7 +94,7 @@ contract Task3 with Deployable {
       }
       if(price == -1){
         send(SendParameters{
-          to: msg.from,
+          to: jet_wallet,
           value: 0,
           mode: 64,
           bounce: false,
@@ -109,7 +111,7 @@ contract Task3 with Deployable {
       }
       else{
         send(SendParameters{
-          to: msg.from,
+          to: jet_wallet,
           value: 100000000,
           mode: 2,
           bounce: false,

@@ -67,7 +67,10 @@ contract Task3 with Deployable {
   }
 
   receive(msg: JettonNotification) {
-    dump(msg.amount, msg.from, msg.forwardPayload);
+    dump(msg.amount);
+    dump(msg.from);
+    dump(sender());
+    dump(msg.forwardPayload);
   } 
   
   get fun price(jetton: Address): Int {

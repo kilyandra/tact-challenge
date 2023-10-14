@@ -74,7 +74,7 @@ contract Task3 with Deployable {
   } 
   
   get fun price(jetton: Address): Int {
-    return aAmount * decimal / bAmount / decimal;
+    return self.aAmount * self.decimal / self.bAmount / self.decimal;
   }
   
   get fun balance(jetton: Address): Int {

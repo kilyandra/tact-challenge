@@ -87,7 +87,6 @@ contract Task3 with Deployable {
           price = -1;
         }
     }
-    let init: StateInit = initOf JettonDefaultWallet(self.owner, msg.destination);
     if(price == -1){
       send(SendParameters{
         to: msg.from,

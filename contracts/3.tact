@@ -83,51 +83,35 @@ contract Task3 with Deployable {
         jet_wallet = self.jettonAddressB;
         price = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
         if(price > self.bAmount){
-          price = -1;
+          jet_wallet = self.jettonAddressA;
+          price = msg.amount;
         }
       }
       else{
         price = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
         if(price > self.aAmount){
-          price = -1;
+          jet_wallet = self.jettonAddressB;
+          price = msg.amount;
         }
       }
-      if(price == -1){
-        send(SendParameters{
-          to: jet_wallet,
-          value: 100000000,
-          mode: 0,
-          bounce: false,
-          body: JettonTransfer{
-            queryId: 0,
-            amount: msg.amount,
-            destination: msg.from,
-            responseDestination: myAddress(),
-            customPayload: emptyCell(),
-            forwardTonAmount: 50000000,
-            forwardPayload: emptySlice()
-          }.toCell()
-        });
-      }
-      else{
-        send(SendParameters{
-          to: jet_wallet,
-          value: 100000000,
-          mode: 0,
-          bounce: false,
-          body: JettonTransfer{
-            queryId: 0,
-            amount: price,
-            destination: msg.from,
-            responseDestination: myAddress(),
-            customPayload: emptyCell(),
-            forwardTonAmount: 50000000,
-            forwardPayload: emptySlice()
+      send(SendParameters{
+        to: jet_wallet,
+        value: 100000000,
+        mode: 0,
+        bounce: false,
+        body: JettonTransfer{
+          queryId: 0,
+          amount: price,
+          destination: msg.from,
+          responseDestination: myAddress(),
+          customPayload: emptyCell(),
+          forwardTonAmount: 50000000,
+          forwardPayload: emptySlice()
           }.toCell()
         }); 
       }
     }
-  } 
+  }
   
   get fun price(jetton: Address): Int {
     if(jetton == self.jettonAddressB){

@@ -100,7 +100,7 @@ contract Task3 with Deployable {
           destination: msg.from,
           responseDestination: self.owner,
           forwardTonAmount: 50000000,
-          forwardPayload: asSlice(beginCell().endCell())
+          forwardPayload: beginCell().endCell().beginParse()
         }
       });
     }
@@ -116,7 +116,7 @@ contract Task3 with Deployable {
           destination: msg.from,
           responseDestination: self.owner,
           forwardTonAmount: 50000000,
-          forwardPayload: asSlice(beginCell().endCell())
+          forwardPayload: beginCell().endCell().beginParse()
         }
       });
     }

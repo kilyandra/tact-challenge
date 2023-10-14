@@ -67,10 +67,10 @@ contract Task3 with Deployable {
   }
 
   receive(msg: JettonNotification) {
-    require(context().sender == self.jettonAddressA || context().sender == self.jettonAddressB, "Wrong jetton");
+    require(sender() == self.jettonAddressA || sender() == self.jettonAddressB, "Wrong jetton");
 
     if(msg.from == self.owner){
-      if(context().sender == self.jettonAddressA){
+      if(sender() == self.jettonAddressA){
         self.aAmount = self.aAmount + msg.amount;
       }
       else{
@@ -79,11 +79,11 @@ contract Task3 with Deployable {
     }
 
     else{
-      let to_wallet: Address = context().sender;
+      let to_wallet: Address = sender();
       let amount: Int = msg.amount;
 
       if(self.aAmount != 0 && self.bAmount != 0){
-        if(context().sender == self.jettonAddressA){
+        if(sender() == self.jettonAddressA){
           amount = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
           if(amount > self.bAmount){
             amount = msg.amount;
@@ -91,6 +91,7 @@ contract Task3 with Deployable {
           else{
             to_wallet = self.jettonAddressB;
             self.bAmount = self.bAmount - amount;
+            self.aAmount = self.aAmount + msg.amount;
           }
         }
         else{
@@ -101,6 +102,7 @@ contract Task3 with Deployable {
           else{
             to_wallet = self.jettonAddressA;
             self.aAmount = self.aAmount - amount;
+            self.bAmount = self.bAmount + msg.amount;
           }
         }
       }
@@ -109,7 +111,7 @@ contract Task3 with Deployable {
         to: to_wallet,
         value: 100000000,
         mode: 2,
-        bounce: true,
+        bounce: false,
         body: JettonTransfer{
           queryId: now(),
           amount: amount,

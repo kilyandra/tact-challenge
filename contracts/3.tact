@@ -49,7 +49,7 @@ message(0xf8a7ea5) JettonTransfer {
     forwardPayload: Slice as remaining;
 }
 
-contract Task3 with Deployable {
+contract SampleTactContract with Deployable {
   owner: Address;
   aAmount: Int;
   bAmount: Int;
@@ -110,39 +110,45 @@ contract Task3 with Deployable {
       send(SendParameters{
         to: to_wallet,
         value: 100000000,
-        mode: 2,
-        bounce: false,
+        mode: 0,
+        bounce: true,
         body: JettonTransfer{
-          queryId: now(),
+          queryId: 0,
           amount: amount,
           destination: msg.from,
           responseDestination: myAddress(),
           customPayload: emptyCell(),
           forwardTonAmount: 50000000,
-          forwardPayload: emptySlice()
+          forwardPayload: msg.forwardPayload()
         }.toCell()
       }); 
     }
   }
   
   get fun price(jetton: Address): Int {
+    if(self.aAmount == 0 || self.bAmount == 0){
+      return 0;
+    }
     if(jetton == self.jettonAddressB){
       return self.aAmount * self.decimal / self.bAmount;
     }
-    else {
+    else if(jetton == self.jettonAddressA){
       return self.bAmount * self.decimal / self.aAmount;
+    }
+    else {
+      return 0;
     }
   }
   
   get fun balance(jetton: Address): Int {
-    if(self.aAmount == 0 || self.bAmount == 0){
-      return 0;
-    }
     if(jetton == self.jettonAddressA){
       return self.aAmount;
     }
-    else {
+    else if(jetton == self.jettonAddressB) {
       return self.bAmount;
+    }
+    else {
+      return 0;
     }
   }
 }

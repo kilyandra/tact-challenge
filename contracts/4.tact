@@ -61,8 +61,8 @@ contract Task4 with Deployable {
     if(self.owner != null){
       send(SendParameters{
         to: sender(),
-        value: context().value,
-        mode: 2,
+        value: 0,
+        mode: 66,
         bounce: false,
         body: Transfer{
           queryId: 0,
@@ -94,7 +94,7 @@ contract Task4 with Deployable {
         to: msg.nftAddress,
         value: 0,
         mode: 66,
-        bounce: true,
+        bounce: false,
         body: Transfer{
           queryId: 0,
           newOwner: self.owner!!,

@@ -55,7 +55,6 @@ contract Task4 with Deployable {
   init(seed: Int) {
     self.seed = seed; // needed to deploy multiple smart contracts copies from one admin address
     self.time = 0;
-    self.owner = newAddress(0, 0);
   }
 
   receive(msg: OwnershipAssigned) {

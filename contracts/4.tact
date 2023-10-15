@@ -62,7 +62,7 @@ contract Task4 with Deployable {
       send(SendParameters{
         to: sender(),
         value: 0,
-        mode: 66,
+        mode: 64,
         bounce: false,
         body: Transfer{
           queryId: 0,
@@ -76,6 +76,13 @@ contract Task4 with Deployable {
     }
 
     else{
+      send(SendParameters{
+        to: sender(),
+        value: 0,
+        mode: 64,
+        bounce: false,
+        body: null
+      });
       self.time = now() + msg.forwardPayload.loadUint(32);
       self.owner = msg.prevOwner;
       self.nftAddress = sender();
@@ -94,7 +101,7 @@ contract Task4 with Deployable {
       send(SendParameters{
         to: msg.nftAddress,
         value: 0,
-        mode: 66,
+        mode: 64,
         bounce: false,
         body: Transfer{
           queryId: 0,

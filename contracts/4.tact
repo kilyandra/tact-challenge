@@ -105,14 +105,17 @@ contract Task4 with Deployable {
   }
 
   get fun time(): Int {
-    return max(0, self.time - now());
+    require(self.time != 0, "No nft locked");
+    return self.time;
   }
 
   get fun nft(): Address? {
+    require(self.nftAddress != null, "No nft locked");
     return self.nftAddress;
   }
 
   get fun owner(): Address? {
+    require(self.owner != null, "No nft locked");
     return self.owner;
   }
 }

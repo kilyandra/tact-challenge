@@ -109,7 +109,7 @@ contract Task3 with Deployable {
 
     send(SendParameters{
       to: to_wallet,
-      value: 100000000,
+      value: ton("0.1"),
       mode: 0,
       bounce: true,
       body: TokenTransfer{
@@ -118,8 +118,8 @@ contract Task3 with Deployable {
         destination: msg.from,
         responseDestination: myAddress(),
         customPayload: emptyCell(),
-        forwardTonAmount: 1,
-        forwardPayload: emptySlice()
+        forwardTonAmount: ton("0.000000001"),
+        forwardPayload: msg.forwardPayload
       }.toCell()
     }); 
   }

@@ -58,31 +58,11 @@ contract Task4 with Deployable {
   }
 
   receive(msg: OwnershipAssigned) {
-    if(self.owner != null){
-      send(SendParameters{
-        to: sender(),
-        value: 0,
-        mode: 64,
-        bounce: false,
-        body: Transfer{
-          queryId: 0,
-          newOwner: msg.prevOwner,
-          responseDestination: msg.prevOwner,
-          customPayload: null,
-          forwardAmount: 0,
-          forwardPayload: emptySlice()
-        }.toCell()
-      });
+    if(self.nftAddress != null){
+      
     }
 
     else{
-      send(SendParameters{
-        to: sender(),
-        value: 0,
-        mode: 64,
-        bounce: false,
-        body: null
-      });
       self.time = now() + msg.forwardPayload.loadUint(32);
       self.owner = msg.prevOwner;
       self.nftAddress = sender();
@@ -90,33 +70,7 @@ contract Task4 with Deployable {
   }
 
   receive(msg: NftWithdrawal) {
-    require(sender() == self.owner, "Invalid sender");
-    require(msg.nftAddress == self.nftAddress, "Invalid NFT");
 
-    if(self.time > now()){
-      self.reply("NFT is still locked".asComment());
-    }
-
-    else{
-      send(SendParameters{
-        to: msg.nftAddress,
-        value: 0,
-        mode: 64,
-        bounce: false,
-        body: Transfer{
-          queryId: 0,
-          newOwner: self.owner!!,
-          responseDestination: self.owner!!,
-          customPayload: null,
-          forwardAmount: 0,
-          forwardPayload: emptySlice()
-        }.toCell()
-      });
-
-      self.time = 0;
-      self.nftAddress = null;
-      self.owner = null;
-    }
   }
 
   get fun time(): Int {

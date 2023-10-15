@@ -70,13 +70,27 @@ contract Task4 with Deployable {
 
   receive(msg: NftWithdrawal) {
     require(sender() == self.owner, "Invalid sender");
-    require(msg.nftAddress == self.nftAddress, "Invalid nft address");
 
     if(self.time > now()){
       self.reply("NFT is still locked".asComment());
     }
 
     else{
+      send(SendParameters{
+        to: msg.nftAddress,
+        value: ton("0.01"),
+        mode: 2,
+        bounce: false,
+        body: Transfer{
+          queryId: 0,
+          newOwner: sender(),
+          responseDestination: sender(),
+          customPayload: emptyCell(),
+          forwardAmount: myBalance() - ton("0.01"),
+          forwardPayload: emptySlice()
+        }.toCell()
+      });
+
       self.time = 0;
       self.nftAddress = null;
       self.owner = null;

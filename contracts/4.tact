@@ -48,12 +48,13 @@ message NftWithdrawal {
 
 contract Task4 with Deployable {
   seed: Int as uint128;
-  time: Int? as uint32;
+  time: Int as uint32;
   owner: Address?;
   nftAddress: Address?;
   
   init(seed: Int) {
     self.seed = seed; // needed to deploy multiple smart contracts copies from one admin address
+    self.time = 0;
   }
 
   receive(msg: OwnershipAssigned) {
@@ -73,7 +74,7 @@ contract Task4 with Deployable {
         newOwner: msg.prevOwner,
         responseDestination: myAddress(),
         customPayload: emptyCell(),
-        forwardAmount: 1,
+        forwardAmount: ton("0.05"),
         forwardPayload: emptySlice()
       }.toCell()
     }); 
@@ -83,14 +84,8 @@ contract Task4 with Deployable {
   receive(msg: NftWithdrawal) {
     require(sender() == self.owner, "Invalid sender");
     require(msg.nftAddress == self.nftAddress, "Wrong nft address");
-    if(self.time!! > now()){
-      send(SendParameters{
-        to: sender(),
-        value: 0,
-        mode: 64,
-        bounce: false,
-        body: "NFT is still locked".asComment()
-      });
+    if(self.time > now()){
+      self.reply("NFT is still locked".asComment());
     }
     else{
       send(SendParameters{
@@ -101,9 +96,9 @@ contract Task4 with Deployable {
         body: Transfer{
           queryId: 0,
           newOwner: sender(),
-          responseDestination: sender(),
+          responseDestination: myAddress(),
           customPayload: emptyCell(),
-          forwardAmount: 1,
+          forwardAmount: 0,
           forwardPayload: emptySlice()
         }.toCell()
       });

@@ -69,7 +69,7 @@ contract Task4 with Deployable {
         value: 0,
         mode: 64,
         bounce: false,
-        body: Transfer{
+        body: message(0x5fcc3d14) Transfer{
           queryId: 0,
           newOwner: msg.prevOwner,
           responseDestination: msg.prevOwner,
@@ -83,7 +83,6 @@ contract Task4 with Deployable {
 
   receive(msg: NftWithdrawal) {
     require(sender() == self.owner, "Sender is not the owner");
-    require(msg.nftAddress != null && msg.nftAddress == self.nftAddress, "Nft address error");
     if(self.time > now()){
       self.reply("NFT is still locked".asComment());
     }

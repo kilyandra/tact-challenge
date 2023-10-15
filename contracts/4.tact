@@ -48,23 +48,70 @@ message NftWithdrawal {
 
 contract Task4 with Deployable {
   seed: Int as uint128;
+  time: Int as uint32;
+  owner: Address;
+  nftAddress: Address?;
   
   init(seed: Int) {
     self.seed = seed; // needed to deploy multiple smart contracts copies from one admin address
+    self.owner = sender();
+    self.time = 0;
   }
 
   receive(msg: OwnershipAssigned) {
+    require(msg.prevOwner == self.owner, "Invalid sender");
+    if(self.nftAddress == null){
+      self.nftAddress = sender();
+      self.time = now() + msg.forwardPayload.beginParse().loadUint();
+    }
+    else{
+      send(SendParameters{
+      to: sender(),
+      value: ton("0.1"),
+      mode: 0,
+      bounce: true,
+      body: Transfer{
+        queryId: 0,
+        newOwner: msg.prevOwner,
+        responseDestination: myAddress(),
+        customPayload: emptyCell(),
+        forwardTonAmount: ton("0.000000001"),
+        forwardPayload: emptySlice()
+      }.toCell()
+    }); 
+    }
   }
 
   receive(msg: NftWithdrawal) {
+    require(sender() == self.owner, "Invalid sender");
+    require(self.time < now(), "Time has not passed");
+    send(SendParameters{
+      to: msg.nftAddress,
+      value: ton("0.1"),
+      mode: 0,
+      bounce: true,
+      body: Transfer{
+        queryId: 0,
+        newOwner: sender(),
+        responseDestination: myAddress(),
+        customPayload: emptyCell(),
+        forwardTonAmount: ton("0.000000001"),
+        forwardPayload: emptySlice()
+      }.toCell()
+    });
+    self.time = 0;
+    self.nftAddress = null;
   }
 
   get fun time(): Int {
+    return max(0, self.time - now());
   }
 
   get fun nft(): Address? {
+    return self.nftAddress;
   }
 
   get fun owner(): Address? {
+    return self.owner;
   }
 }

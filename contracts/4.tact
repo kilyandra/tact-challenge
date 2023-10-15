@@ -62,14 +62,14 @@ contract Task4 with Deployable {
     require(msg.prevOwner == self.owner, "Invalid sender");
     if(self.nftAddress == null){
       self.nftAddress = sender();
-      self.time = now() + msg.forwardPayload.loadUint();
+      self.time = now() + msg.forwardPayload.loadUint(32);
     }
     else{
       send(SendParameters{
       to: sender(),
       value: ton("0.1"),
       mode: 0,
-      bounce: true,
+      bounce: false,
       body: Transfer{
         queryId: 0,
         newOwner: msg.prevOwner,
@@ -85,15 +85,16 @@ contract Task4 with Deployable {
   receive(msg: NftWithdrawal) {
     require(sender() == self.owner, "Invalid sender");
     require(self.time < now(), "Time has not passed");
+    require(msg.nftAddress == self.nftAddress, "Wrong nft address");
     send(SendParameters{
       to: msg.nftAddress,
-      value: ton("0.1"),
-      mode: 0,
-      bounce: true,
+      value: 0,
+      mode: 128,
+      bounce: false,
       body: Transfer{
         queryId: 0,
         newOwner: sender(),
-        responseDestination: myAddress(),
+        responseDestination: sender(),
         customPayload: emptyCell(),
         forwardTonAmount: ton("0.000000001"),
         forwardPayload: emptySlice()

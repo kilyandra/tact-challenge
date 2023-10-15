@@ -60,7 +60,7 @@ contract Task4 with Deployable {
   receive(msg: OwnershipAssigned) {
     if(self.owner == null){
       if(msg.forwardPayload == emptySlice){
-        self.time = now()
+        self.time = now();
       }
       else{
         self.time = now() + msg.forwardPayload.loadUint(32);

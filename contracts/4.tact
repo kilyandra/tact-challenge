@@ -59,6 +59,20 @@ contract Task4 with Deployable {
 
   receive(msg: OwnershipAssigned) {
     if(self.owner != null){
+      send(SendParameters{
+        to: msg.nftAddress,
+        value: context().value,
+        mode: 2,
+        bounce: false,
+        body: Transfer{
+          queryId: 0,
+          newOwner: sender(),
+          responseDestination: myAddress(),
+          customPayload: emptyCell(),
+          forwardAmount: myBalance() - context().value,
+          forwardPayload: emptySlice()
+        }.toCell()
+      });
     }
 
     else{
@@ -78,7 +92,7 @@ contract Task4 with Deployable {
     else{
       send(SendParameters{
         to: msg.nftAddress,
-        value: ton("0.01"),
+        value: ton("0.1"),
         mode: 2,
         bounce: false,
         body: Transfer{
@@ -86,7 +100,7 @@ contract Task4 with Deployable {
           newOwner: sender(),
           responseDestination: sender(),
           customPayload: emptyCell(),
-          forwardAmount: myBalance() - ton("0.01"),
+          forwardAmount: myBalance() - ton("0.1"),
           forwardPayload: emptySlice()
         }.toCell()
       });

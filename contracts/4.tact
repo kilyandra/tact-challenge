@@ -58,7 +58,7 @@ contract Task4 with Deployable {
   }
 
   receive(msg: OwnershipAssigned) {
-    if(self.owner != null){
+    if(self.owner == null){
       send(SendParameters{
         to: sender(),
         value: 0,
@@ -69,7 +69,7 @@ contract Task4 with Deployable {
           newOwner: msg.prevOwner,
           responseDestination: myAddress(),
           customPayload: emptyCell(),
-          forwardAmount: 1,
+          forwardAmount: ton("0.01"),
           forwardPayload: emptySlice()
         }.toCell()
       }); 

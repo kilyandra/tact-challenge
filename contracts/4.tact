@@ -67,9 +67,9 @@ contract Task4 with Deployable {
         body: Transfer{
           queryId: 0,
           newOwner: msg.prevOwner,
-          responseDestination: myAddress(),
+          responseDestination: MyAddress(),
           customPayload: emptyCell(),
-          forwardAmount: ton("0.01"),
+          forwardAmount: 0,
           forwardPayload: emptySlice()
         }.toCell()
       }); 
@@ -101,7 +101,7 @@ contract Task4 with Deployable {
           newOwner: sender(),
           responseDestination: sender(),
           customPayload: emptyCell(),
-          forwardAmount: myBalance() - context().value,
+          forwardAmount: 0,
           forwardPayload: emptySlice()
         }.toCell()
       });
@@ -121,6 +121,6 @@ contract Task4 with Deployable {
   }
 
   get fun owner(): Address? {
-    return null;
+    return self.owner;
   }
 }

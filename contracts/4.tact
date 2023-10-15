@@ -60,16 +60,16 @@ contract Task4 with Deployable {
   receive(msg: OwnershipAssigned) {
     if(self.owner != null){
       send(SendParameters{
-        to: msg.nftAddress,
+        to: sender(),
         value: context().value,
         mode: 2,
         bounce: false,
         body: Transfer{
           queryId: 0,
-          newOwner: sender(),
+          newOwner: msg.prevOwner,
           responseDestination: myAddress(),
           customPayload: emptyCell(),
-          forwardAmount: myBalance() - context().value,
+          forwardAmount: 1,
           forwardPayload: emptySlice()
         }.toCell()
       });

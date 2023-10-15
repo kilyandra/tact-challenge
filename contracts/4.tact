@@ -75,7 +75,7 @@ contract Task4 with Deployable {
         newOwner: msg.prevOwner,
         responseDestination: myAddress(),
         customPayload: emptyCell(),
-        forwardTonAmount: ton("0.000000001"),
+        forwardAmount: 1,
         forwardPayload: emptySlice()
       }.toCell()
     }); 
@@ -96,7 +96,7 @@ contract Task4 with Deployable {
         newOwner: sender(),
         responseDestination: sender(),
         customPayload: emptyCell(),
-        forwardTonAmount: ton("0.000000001"),
+        forwardAmount: 1,
         forwardPayload: emptySlice()
       }.toCell()
     });

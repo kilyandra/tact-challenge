@@ -59,20 +59,6 @@ contract Task4 with Deployable {
 
   receive(msg: OwnershipAssigned) {
     if(self.owner != null){
-      send(SendParameters{
-        to: sender(),
-        value: 0,
-        mode: 66,
-        bounce: false,
-        body: Transfer{
-          queryId: 0,
-          newOwner: msg.prevOwner,
-          responseDestination: myAddress(),
-          customPayload: emptyCell(),
-          forwardAmount: 0,
-          forwardPayload: emptySlice()
-        }.toCell()
-      }); 
     }
 
     else{

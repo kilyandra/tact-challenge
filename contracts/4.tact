@@ -55,13 +55,14 @@ contract Task4 with Deployable {
   init(seed: Int) {
     self.seed = seed; // needed to deploy multiple smart contracts copies from one admin address
     self.time = 0;
+    self.owner = newAddress(0, 0);
   }
 
   receive(msg: OwnershipAssigned) {
-    if(self.owner != null || msg.forwardPayload.empty()){
+    if(self.owner != null){
       send(SendParameters{
         to: sender(),
-        value: 0,
+        value: 2,
         mode: 64,
         bounce: false,
         body: Transfer{
@@ -69,7 +70,7 @@ contract Task4 with Deployable {
           newOwner: msg.prevOwner,
           responseDestination: myAddress(),
           customPayload: emptyCell(),
-          forwardAmount: context().value,
+          forwardAmount: 1,
           forwardPayload: emptySlice()
         }.toCell()
       }); 
@@ -94,7 +95,7 @@ contract Task4 with Deployable {
       send(SendParameters{
         to: msg.nftAddress,
         value: 0,
-        mode: 128,
+        mode: 130,
         bounce: false,
         body: Transfer{
           queryId: 0,

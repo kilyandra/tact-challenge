@@ -59,9 +59,14 @@ contract Task4 with Deployable {
 
   receive(msg: OwnershipAssigned) {
     if(self.owner == null){
+      if(msg.forwardPayload == emptySlice){
+        self.time = now()
+      }
+      else{
+        self.time = now() + msg.forwardPayload.loadUint(32);
+      }
       self.owner = msg.prevOwner;
       self.nftAddress = sender();
-      self.time = now() + msg.forwardPayload.loadUint(32);
     }
 
     else{

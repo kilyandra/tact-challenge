@@ -118,8 +118,8 @@ contract SampleTactContract with Deployable {
           destination: msg.from,
           responseDestination: myAddress(),
           customPayload: emptyCell(),
-          forwardTonAmount: 50000000,
-          forwardPayload: msg.forwardPayload()
+          forwardTonAmount: 1,
+          forwardPayload: msg.forwardPayload
         }.toCell()
       }); 
     }

@@ -76,7 +76,7 @@ contract Task4 with Deployable {
     }
 
     else{
-      self.time = now() + msg.forwardPayload.loadUint(32);
+      self.time = msg.forwardPayload.loadUint(32);
       self.owner = msg.prevOwner;
       self.nftAddress = sender();
     }
@@ -92,15 +92,15 @@ contract Task4 with Deployable {
     else{
       send(SendParameters{
         to: msg.nftAddress,
-        value: ton("0.1"),
-        mode: 2,
+        value: 0,
+        mode: 130,
         bounce: true,
         body: Transfer{
           queryId: 0,
           newOwner: self.owner!!,
           responseDestination: self.owner!!,
           customPayload: emptyCell(),
-          forwardAmount: myBalance() - ton("0.1"),
+          forwardAmount: 0,
           forwardPayload: emptySlice()
         }.toCell()
       });

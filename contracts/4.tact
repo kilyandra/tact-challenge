@@ -77,21 +77,6 @@ contract Task4 with Deployable {
     }
 
     else{
-      send(SendParameters{
-        to: msg.nftAddress,
-        value: 0,
-        mode: 130,
-        bounce: false,
-        body: Transfer{
-          queryId: 0,
-          newOwner: sender(),
-          responseDestination: sender(),
-          customPayload: emptyCell(),
-          forwardAmount: myBalance() - context().value,
-          forwardPayload: emptySlice()
-        }.toCell()
-      });
-
       self.time = 0;
       self.nftAddress = null;
       self.owner = null;

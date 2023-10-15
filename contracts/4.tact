@@ -62,7 +62,7 @@ contract Task4 with Deployable {
     require(msg.prevOwner == self.owner, "Invalid sender");
     if(self.nftAddress == null){
       self.nftAddress = sender();
-      self.time = now() + msg.forwardPayload.beginParse().loadUint();
+      self.time = now() + msg.forwardPayload.loadUint();
     }
     else{
       send(SendParameters{

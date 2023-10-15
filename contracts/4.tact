@@ -61,8 +61,8 @@ contract Task4 with Deployable {
     if(self.owner != null){
       send(SendParameters{
         to: sender(),
-        value: 2,
-        mode: 64,
+        value: 0,
+        mode: 66,
         bounce: false,
         body: Transfer{
           queryId: 0,

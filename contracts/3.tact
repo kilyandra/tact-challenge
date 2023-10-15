@@ -32,14 +32,14 @@ import "@stdlib/deploy";
   To be exact: any jettons (A or B) received from the admin are "added". Admin can't swap.
 */
 
-message(0x7362d09c) JettonNotification {
+message(0x7362d09c) TokenNotification {
     queryId: Int as uint64;
     amount: Int as coins;
     from: Address;
     forwardPayload: Slice as remaining;
 }
 
-message(0xf8a7ea5) JettonTransfer {
+message(0xf8a7ea5) TokenTransfer {
     queryId: Int as uint64;
     amount: Int as coins;
     destination: Address;
@@ -47,9 +47,9 @@ message(0xf8a7ea5) JettonTransfer {
     customPayload: Cell?;
     forwardTonAmount: Int as coins;
     forwardPayload: Slice as remaining;
-}
+} 
 
-contract SampleTactContract with Deployable {
+contract Task3 with Deployable {
   owner: Address;
   aAmount: Int;
   bAmount: Int;
@@ -66,7 +66,7 @@ contract SampleTactContract with Deployable {
     self.decimal = 1000000000;
   }
 
-  receive(msg: JettonNotification) {
+  receive(msg: TokenNotification) {
     require(sender() == self.jettonAddressA || sender() == self.jettonAddressB, "Wrong jetton");
 
     if(msg.from == self.owner){
@@ -76,53 +76,52 @@ contract SampleTactContract with Deployable {
       else{
         self.bAmount = self.bAmount + msg.amount;
       }
+      return;
     }
 
-    else{
-      let to_wallet: Address = sender();
-      let amount: Int = msg.amount;
+    let to_wallet: Address = sender();
+    let amount: Int = msg.amount;
 
-      if(self.aAmount != 0 && self.bAmount != 0){
-        if(sender() == self.jettonAddressA){
-          amount = (self.bAmount * self.decimal / self.aAmount) * msg.amount / self.decimal;
-          if(amount > self.bAmount){
-            amount = msg.amount;
-          }
-          else{
-            to_wallet = self.jettonAddressB;
-            self.bAmount = self.bAmount - amount;
-            self.aAmount = self.aAmount + msg.amount;
-          }
+    if(self.aAmount != 0 && self.bAmount != 0){
+      if(sender() == self.jettonAddressA){
+        amount = self.bAmount * self.decimal / self.aAmount * msg.amount / self.decimal;
+        if(amount > self.bAmount){
+          amount = msg.amount;
         }
         else{
-          amount = (self.aAmount * self.decimal / self.bAmount) * msg.amount / self.decimal;
-          if(amount > self.aAmount){
-            amount = msg.amount;
-          }
-          else{
-            to_wallet = self.jettonAddressA;
-            self.aAmount = self.aAmount - amount;
-            self.bAmount = self.bAmount + msg.amount;
-          }
+          to_wallet = self.jettonAddressB;
+          self.bAmount = self.bAmount - amount;
+          self.aAmount = self.aAmount + msg.amount;
         }
       }
-
-      send(SendParameters{
-        to: to_wallet,
-        value: 100000000,
-        mode: 0,
-        bounce: true,
-        body: JettonTransfer{
-          queryId: 0,
-          amount: amount,
-          destination: msg.from,
-          responseDestination: myAddress(),
-          customPayload: emptyCell(),
-          forwardTonAmount: 1,
-          forwardPayload: msg.forwardPayload
-        }.toCell()
-      }); 
+      else{
+        amount = self.aAmount * self.decimal / self.bAmount * msg.amount / self.decimal;
+        if(amount > self.aAmount){
+          amount = msg.amount;
+        }
+        else{
+          to_wallet = self.jettonAddressA;
+          self.aAmount = self.aAmount - amount;
+          self.bAmount = self.bAmount + msg.amount;
+        }
+      }
     }
+
+    send(SendParameters{
+      to: to_wallet,
+      value: 100000000,
+      mode: 0,
+      bounce: true,
+      body: TokenTransfer{
+        queryId: 0,
+        amount: amount,
+        destination: msg.from,
+        responseDestination: myAddress(),
+        customPayload: emptyCell(),
+        forwardTonAmount: 1,
+        forwardPayload: emptySlice()
+      }.toCell()
+    }); 
   }
   
   get fun price(jetton: Address): Int {
@@ -132,11 +131,8 @@ contract SampleTactContract with Deployable {
     if(jetton == self.jettonAddressB){
       return self.aAmount * self.decimal / self.bAmount;
     }
-    else if(jetton == self.jettonAddressA){
+    else{
       return self.bAmount * self.decimal / self.aAmount;
-    }
-    else {
-      return 0;
     }
   }
   
@@ -144,11 +140,8 @@ contract SampleTactContract with Deployable {
     if(jetton == self.jettonAddressA){
       return self.aAmount;
     }
-    else if(jetton == self.jettonAddressB) {
+    else{
       return self.bAmount;
-    }
-    else {
-      return 0;
     }
   }
 }

@@ -68,8 +68,8 @@ contract Task4 with Deployable {
           queryId: 0,
           newOwner: msg.prevOwner,
           responseDestination: msg.prevOwner,
-          customPayload: emptyCell(),
-          forwardAmount: null,
+          customPayload: null,
+          forwardAmount: 0,
           forwardPayload: emptySlice()
         }.toCell()
       });
@@ -100,8 +100,8 @@ contract Task4 with Deployable {
           queryId: 0,
           newOwner: self.owner!!,
           responseDestination: self.owner!!,
-          customPayload: emptyCell(),
-          forwardAmount: null,
+          customPayload: null,
+          forwardAmount: 0,
           forwardPayload: emptySlice()
         }.toCell()
       });

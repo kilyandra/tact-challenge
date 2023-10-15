@@ -58,18 +58,7 @@ contract Task4 with Deployable {
   }
 
   receive(msg: OwnershipAssigned) {
-    if(self.owner == null){
-      if(msg.forwardPayload == null){
-        self.time = now();
-      }
-      else{
-        self.time = now() + msg.forwardPayload.loadUint(32);
-      }
-      self.owner = msg.prevOwner;
-      self.nftAddress = sender();
-    }
-
-    else{
+    if(self.owner != null || msg.forwardPayload.empty()){
       send(SendParameters{
         to: sender(),
         value: ton("0.1"),
@@ -84,6 +73,12 @@ contract Task4 with Deployable {
           forwardPayload: emptySlice()
         }.toCell()
       }); 
+    }
+
+    else{
+      self.time = now() + msg.forwardPayload.loadUint(32);
+      self.owner = msg.prevOwner;
+      self.nftAddress = sender();
     }
   }
 

@@ -101,6 +101,7 @@ contract Task4 with Deployable {
     });
     self.time = 0;
     self.nftAddress = null;
+    self.owner = null;
   }
 
   get fun time(): Int {

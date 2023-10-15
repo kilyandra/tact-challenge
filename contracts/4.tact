@@ -97,8 +97,8 @@ contract Task4 with Deployable {
         bounce: true,
         body: Transfer{
           queryId: 0,
-          newOwner: self.owner,
-          responseDestination: self.owner,
+          newOwner: self.owner!!,
+          responseDestination: self.owner!!,
           customPayload: emptyCell(),
           forwardAmount: myBalance() - ton("0.1"),
           forwardPayload: emptySlice()
@@ -112,7 +112,10 @@ contract Task4 with Deployable {
   }
 
   get fun time(): Int {
-    return max(0, self.time - now());
+    if(self.time <= now){
+      return 0;
+    }
+    return self.time - now();
   }
 
   get fun nft(): Address? {

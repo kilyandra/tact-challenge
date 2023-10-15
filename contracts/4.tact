@@ -94,11 +94,11 @@ contract Task4 with Deployable {
         to: msg.nftAddress,
         value: ton("0.1"),
         mode: 2,
-        bounce: false,
+        bounce: true,
         body: Transfer{
           queryId: 0,
-          newOwner: sender(),
-          responseDestination: sender(),
+          newOwner: self.owner,
+          responseDestination: self.owner,
           customPayload: emptyCell(),
           forwardAmount: myBalance() - ton("0.1"),
           forwardPayload: emptySlice()

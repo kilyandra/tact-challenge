@@ -58,19 +58,19 @@ contract Task4 with Deployable {
   }
 
   receive(msg: OwnershipAssigned) {
-    if(self.nftAddress != null){
-      
-    }
-
-    else{
+    if(self.nftAddress == null){
       self.time = now() + msg.forwardPayload.loadUint(32);
       self.owner = msg.prevOwner;
       self.nftAddress = sender();
     }
+
+    else{
+      
+    }
   }
 
   receive(msg: NftWithdrawal) {
-
+    require(sender() == self.owner, "Sender is not the owner");
   }
 
   get fun time(): Int {

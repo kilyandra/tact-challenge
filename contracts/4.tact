@@ -93,7 +93,7 @@ contract Task4 with Deployable {
     else{
       send(SendParameters{
         to: msg.nftAddress,
-        value: ton("0.01"),
+        value: 0,
         mode: 64,
         bounce: false,
         body: Transfer{
@@ -101,7 +101,7 @@ contract Task4 with Deployable {
           newOwner: sender(),
           responseDestination: sender(),
           customPayload: emptyCell(),
-          forwardAmount: myBalance() - context().value - ton("0.01"),
+          forwardAmount: myBalance() - context().value,
           forwardPayload: emptySlice()
         }.toCell()
       });

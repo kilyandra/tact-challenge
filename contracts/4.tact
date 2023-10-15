@@ -83,39 +83,46 @@ contract Task4 with Deployable {
 
   receive(msg: NftWithdrawal) {
     require(sender() == self.owner, "Invalid sender");
-    require(self.time <= now(), "Time has not passed");
     require(msg.nftAddress == self.nftAddress, "Wrong nft address");
-    send(SendParameters{
-      to: msg.nftAddress,
-      value: 0,
-      mode: 128,
-      bounce: false,
-      body: Transfer{
-        queryId: 0,
-        newOwner: sender(),
-        responseDestination: sender(),
-        customPayload: emptyCell(),
-        forwardAmount: 1,
-        forwardPayload: emptySlice()
-      }.toCell()
-    });
-    self.time = 0;
-    self.nftAddress = null;
-    self.owner = null;
+    if(self.time > now()){
+      send(SendParameters{
+        to: sender(),
+        value: 0,
+        mode: 64,
+        bounce: false,
+        body: "NFT is still locked".asComment()
+      });
+    }
+    else{
+      send(SendParameters{
+        to: msg.nftAddress,
+        value: 0,
+        mode: 128,
+        bounce: false,
+        body: Transfer{
+          queryId: 0,
+          newOwner: sender(),
+          responseDestination: sender(),
+          customPayload: emptyCell(),
+          forwardAmount: 1,
+          forwardPayload: emptySlice()
+        }.toCell()
+      });
+      self.time = 0;
+      self.nftAddress = null;
+      self.owner = null;
+    }
   }
 
   get fun time(): Int {
-    require(self.time != 0, "No nft locked");
-    return self.time;
+    return max(0, self.time - now());
   }
 
   get fun nft(): Address? {
-    require(self.nftAddress != null, "No nft locked");
     return self.nftAddress;
   }
 
   get fun owner(): Address? {
-    require(self.owner != null, "No nft locked");
     return self.owner;
   }
 }

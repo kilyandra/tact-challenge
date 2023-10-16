@@ -153,7 +153,7 @@ contract Task5 with Deployable {
   }
 
   get fun profit(): Int { 
-    return self.fees - ton("0.1");
+    return self.fees;
   }
   
   get fun nfts(): map<Int as uint16, Address> { 

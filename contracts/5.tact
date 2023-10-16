@@ -147,7 +147,7 @@ contract Task5 with Deployable {
 
     send(SendParameters{
         to: sender(),
-        value: myBalance() - ton("0.01"),
+        value: myBalance() - ton("0.1"),
         mode: 0,
         bounce: false,
         body: AdminFetchProfit{

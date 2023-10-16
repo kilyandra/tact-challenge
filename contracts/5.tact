@@ -151,12 +151,11 @@ contract Task5 with Deployable {
 
   receive(msg: AdminWithdrawalProfit) {
     require(sender() == self.owner, "Insufficient privelegies");
-    require(myBalance() > ton("0.1"), "No profit");
 
     send(SendParameters{
         to: self.owner,
-        value: myBalance() - ton("0.1"),
-        mode: 0,
+        value: self.fees,
+        mode: 1,
         bounce: false,
         body: AdminFetchProfit{ queryId: msg.queryId }.toCell()
       });

@@ -100,24 +100,20 @@ contract Task5 with Deployable {
         });
       }
       else{
-        let num: Int = 0;
-        }
-        if(num == 0){
-          send(SendParameters{
-            to: sender(),
-            value: context().value - ton("2"),
-            mode: 0,
-            bounce: false,
-            body: Transfer{
-              queryId: msg.queryId,
-              newOwner: msg.prevOwner,
-              responseDestination: msg.prevOwner,
-              customPayload: null,
-              forwardAmount: 0,
-              forwardPayload: emptySlice()
-            }.toCell()
-          });
-        }
+        send(SendParameters{
+          to: sender(),
+          value: context().value - ton("2"),
+          mode: 0,
+          bounce: false,
+          body: Transfer{
+            queryId: msg.queryId,
+            newOwner: msg.prevOwner,
+            responseDestination: msg.prevOwner,
+            customPayload: null,
+            forwardAmount: 0,
+            forwardPayload: emptySlice()
+          }.toCell()
+        });
       }
     }
   }

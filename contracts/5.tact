@@ -67,14 +67,12 @@ message(0x5fcc3d14) Transfer {
 contract Task5 with Deployable {
   owner: Address;
   seed: Int as uint128;
-  fees: Int as uint32;
   count: Int as uint16;
   nfts: map<Int as uint16, Address>;
   
   init(seed: Int, owner: Address) {
     self.owner = owner;
     self.seed = seed;
-    self.fees = 0;
     self.count = 0;
   }
 
@@ -103,7 +101,6 @@ contract Task5 with Deployable {
       }
 
       else{
-        self.fees = self.fees + ton("2");
         let num: Int = 0;
 
         if(self.count > 0){
@@ -150,7 +147,7 @@ contract Task5 with Deployable {
   }
 
   receive(msg: AdminWithdrawalProfit) {
-    /*require(sender() == self.owner, "Insufficient privelegies");
+    require(sender() == self.owner, "Insufficient privelegies");
     require(myBalance() > ton("0.1"), "No fees");
 
     send(SendParameters{
@@ -161,7 +158,7 @@ contract Task5 with Deployable {
         body: AdminFetchProfit{ queryId: msg.queryId }.toCell()
       });
     
-    self.fees = 0;*/
+    self.fees = 0;
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
@@ -190,7 +187,7 @@ contract Task5 with Deployable {
   }
 
   get fun profit(): Int { 
-    return max(0, myBalance() - ton("0.1"));
+    //return max(0, myBalance() - ton("0.1"));
   }
   
   get fun nfts(): map<Int as uint16, Address> { 

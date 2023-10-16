@@ -109,16 +109,16 @@ contract Task3 with Deployable {
 
     send(SendParameters{
       to: to_wallet,
-      value: ton("0.1"),
-      mode: 0,
-      bounce: true,
+      value: 0,
+      mode: 64,
+      bounce: false,
       body: TokenTransfer{
         queryId: msg.queryId,
         amount: amount,
         destination: msg.from,
-        responseDestination: myAddress(),
-        customPayload: emptyCell(),
-        forwardTonAmount: ton("0.000000001"),
+        responseDestination: msg.from,
+        customPayload: none,
+        forwardTonAmount: 0,
         forwardPayload: msg.forwardPayload
       }.toCell()
     }); 

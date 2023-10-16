@@ -83,35 +83,33 @@ contract Task5 with Deployable {
       self.nfts.set(self.count, sender());
       self.count = self.count + 1;
     }
+
     else{
       if(context().value < ton("2.1")){
-        if(context().value > ton("0.05")){
-          send(SendParameters{
-            to: sender(),
-            value: 0,
-            mode: 64,
-            bounce: false,
-            body: Transfer{
-              queryId: msg.queryId,
-              newOwner: msg.prevOwner,
-              responseDestination: msg.prevOwner,
-              customPayload: null,
-              forwardAmount: 0,
-              forwardPayload: emptySlice()
-            }.toCell()
-          });
-        }
-        else{
-          self.nfts.set(self.count, sender());
-          self.count = self.count + 1;
-        }
+        send(SendParameters{
+          to: sender(),
+          value: 0,
+          mode: 66,
+          bounce: false,
+          body: Transfer{
+            queryId: msg.queryId,
+            newOwner: msg.prevOwner,
+            responseDestination: msg.prevOwner,
+            customPayload: null,
+            forwardAmount: 0,
+            forwardPayload: emptySlice()
+          }.toCell()
+        });
       }
+
       else{
         self.fees = self.fees + ton("2");
         let num: Int = 0;
+
         if(self.count > 0){
           num = random(0, self.count);
         }
+
         if(num == 0){
           send(SendParameters{
             to: sender(),
@@ -128,6 +126,7 @@ contract Task5 with Deployable {
             }.toCell()
           });
         }
+
         else{
           send(SendParameters{
             to: self.nfts.get(num - 1)!!,
@@ -143,6 +142,7 @@ contract Task5 with Deployable {
               forwardPayload: emptySlice()
             }.toCell()
           });
+
           self.nfts.set(num - 1, sender());
         }
       }
@@ -150,16 +150,45 @@ contract Task5 with Deployable {
   }
 
   receive(msg: AdminWithdrawalProfit) {
+    require(sender() == self.owner, "Insufficient privelegies");
+    require(myBalance() > ton("0.1"), "No profit");
 
+    send(SendParameters{
+        to: self.owner,
+        value: myBalance() - ton("0.1"),
+        mode: 0,
+        bounce: false,
+        body: AdminFetchProfit{ queryId: msg.queryId }.toCell()
+      });
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
     require(sender() == self.owner, "Insufficient privelegies");
+    require(self.count > 0, "No nft");
+    require(context().value >= self.count * ton("0.08") + ton("1"), "Insufficent funds");
 
+    repeat(self.count){
+      self.count = self.count - 1;
+      send(SendParameters{
+        to: self.nfts.get(self.count)!!,
+        value: ton("0.08"),
+        mode: 0,
+        bounce: false,
+        body: Transfer{
+          queryId: msg.queryId,
+          newOwner: sender(),
+          responseDestination: sender(),
+          customPayload: null,
+          forwardAmount: 0,
+          forwardPayload: emptySlice()
+        }.toCell()
+      });
+    }
+    self.nfts = emptyMap();
   }
 
   get fun profit(): Int { 
-    return self.fees;
+    return self.fees - ton("0.1");
   }
   
   get fun nfts(): map<Int as uint16, Address> { 

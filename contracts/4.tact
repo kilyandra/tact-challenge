@@ -63,6 +63,7 @@ contract Task4 with Deployable {
       self.owner = msg.prevOwner;
       self.nftAddress = sender();
     }
+
     else{
       send(SendParameters{
         to: sender(),
@@ -70,7 +71,7 @@ contract Task4 with Deployable {
         mode: 0,
         bounce: false,
         body: Transfer{
-          queryId: msg.queryId,
+          queryId: msg.queryId+1,
           newOwner: msg.prevOwner,
           responseDestination: msg.prevOwner,
           customPayload: null,
@@ -87,6 +88,7 @@ contract Task4 with Deployable {
     if(self.time > now()){
       self.reply("NFT is still locked".asComment());
     }
+
     else{
       self.time = 0;
       self.owner = null;

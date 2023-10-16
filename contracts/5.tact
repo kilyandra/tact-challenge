@@ -154,11 +154,13 @@ contract Task5 with Deployable {
 
     send(SendParameters{
         to: self.owner,
-        value: self.fees,
-        mode: 1,
+        value: myBalance() - ton("0.1"),
+        mode: 0,
         bounce: false,
         body: AdminFetchProfit{ queryId: msg.queryId }.toCell()
       });
+    
+    self.fees = 0;
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
@@ -187,7 +189,7 @@ contract Task5 with Deployable {
   }
 
   get fun profit(): Int { 
-    return self.fees - ton("0.1");
+    return max(0, myBalance() - ton("0.1"));
   }
   
   get fun nfts(): map<Int as uint16, Address> { 

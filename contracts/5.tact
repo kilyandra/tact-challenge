@@ -149,10 +149,11 @@ contract Task5 with Deployable {
 
   receive(msg: AdminWithdrawalAllNFTs) {
     require(sender() == self.owner, "Insufficient privelegies");
-    
-    while(self.count != 0){
+
+    repeat(self.count){
+      self.count = self.count - 1;
       send(SendParameters{
-        to: self.nfts.get(self.count - 1)!!,
+        to: self.nfts.get(self.count)!!,
         value: ton("0.08"),
         mode: 0,
         bounce: false,
@@ -165,9 +166,7 @@ contract Task5 with Deployable {
           forwardPayload: emptySlice()
         }.toCell()
       });
-      self.count = self.count - 1;
     }
-
     self.nfts = emptyMap();
   }
 

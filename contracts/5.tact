@@ -100,20 +100,43 @@ contract Task5 with Deployable {
         });
       }
       else{
-        send(SendParameters{
-          to: sender(),
-          value: context().value - ton("2"),
-          mode: 0,
-          bounce: false,
-          body: Transfer{
-            queryId: msg.queryId,
-            newOwner: msg.prevOwner,
-            responseDestination: msg.prevOwner,
-            customPayload: null,
-            forwardAmount: 0,
-            forwardPayload: emptySlice()
-          }.toCell()
-        });
+        let num: Int = 0;
+        if(self.count > 0){
+          num = random(0, self.count);
+        }
+        if(num == 0){
+          send(SendParameters{
+            to: sender(),
+            value: context().value - ton("2"),
+            mode: 0,
+            bounce: false,
+            body: Transfer{
+              queryId: msg.queryId,
+              newOwner: msg.prevOwner,
+              responseDestination: msg.prevOwner,
+              customPayload: null,
+              forwardAmount: 0,
+              forwardPayload: emptySlice()
+            }.toCell()
+          });
+        }
+        else{
+          send(SendParameters{
+            to: self.nfts.get(num - 1)!!,
+            value: myBalance() - self.fees,
+            mode: 0,
+            bounce: false,
+            body: Transfer{
+              queryId: msg.queryId,
+              newOwner: msg.prevOwner,
+              responseDestination: msg.prevOwner,
+              customPayload: null,
+              forwardAmount: 0,
+              forwardPayload: emptySlice()
+            }.toCell()
+          });
+          self.nfts.set(num - 1, sender());
+        }
         self.fees = self.fees + ton("2");
       }
     }

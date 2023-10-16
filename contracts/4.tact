@@ -96,9 +96,9 @@ contract Task4 with Deployable {
 
       send(SendParameters{
         to: sender(),
-        value: context().value,
-        mode: 0,
-        bounce: false,
+        value: 0,
+        mode: 64,
+        bounce: true,
         body: Transfer{
           queryId: msg.queryId,
           newOwner: sender(),

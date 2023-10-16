@@ -154,6 +154,7 @@ contract Task5 with Deployable {
           queryId: msg.queryId
         }.toCell()
       });
+    self.fees = 0;
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {

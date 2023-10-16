@@ -13,13 +13,14 @@ contract Task2 with Deployable {
   }
   
   receive(msg: Refund) {
-    require(sender() == self.admin, "0");
-    send(SendParameters{
+    if(sender() == self.admin){
+      send(SendParameters{
         to: msg.sender,
         bounce: false,
         value: 0,
         mode: 64
-    });
+      });
+    }
   }
 
   receive(msg: Slice) {

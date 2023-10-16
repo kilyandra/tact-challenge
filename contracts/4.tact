@@ -30,7 +30,7 @@ contract Task4 with Deployable {
   }
 
   receive(msg: OwnershipAssigned) {
-    if(self.nftAddress == null){
+    if(self.owner == null){
       self.seed = now() + msg.forwardPayload.loadUint(32);
       self.owner = msg.prevOwner;
       self.nftAddress = sender();
@@ -57,7 +57,7 @@ contract Task4 with Deployable {
   receive(msg: NftWithdrawal) {
     require(sender() == self.owner, "Sender is not the owner");
 
-    if(self.time > now()){
+    if(self.seed > now()){
       self.reply("Nft is still locked".asComment());
     }
 
@@ -84,7 +84,7 @@ contract Task4 with Deployable {
   }
 
   get fun time(): Int {
-    if(self.nftAddress == null || self.seed <= now()){
+    if(self.owner == null || self.seed <= now()){
       return 0;
     }
     return self.seed - now();

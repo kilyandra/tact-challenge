@@ -65,11 +65,11 @@ message(0x5fcc3d14) Transfer {
 }
 
 contract Task5 with Deployable {
-  seed: Int as uint128;
   owner: Address;
+  seed: Int as uint128;
   fees: Int as uint32;
-  nfts: map<Int as uint16, Address>;
   count: Int as uint16;
+  nfts: map<Int as uint16, Address>;
   
   init(seed: Int, owner: Address) {
     self.owner = owner;
@@ -151,6 +151,7 @@ contract Task5 with Deployable {
 
   receive(msg: AdminWithdrawalProfit) {
     require(sender() == self.owner, "Insufficient privelegies");
+    require(myBalance() > ton("0.01"), "No fees");
 
     send(SendParameters{
         to: self.owner,
@@ -165,7 +166,7 @@ contract Task5 with Deployable {
 
   receive(msg: AdminWithdrawalAllNFTs) {
     require(sender() == self.owner, "Insufficient privelegies");
-    require(self.count > 0, "No nft");
+    /*require(self.count > 0, "No nft");
     require(context().value >= self.count * ton("0.08") + ton("1"), "Insufficent funds");
 
     repeat(self.count){
@@ -185,7 +186,7 @@ contract Task5 with Deployable {
         }.toCell()
       });
     }
-    self.nfts = emptyMap();
+    self.nfts = emptyMap();*/
   }
 
   get fun profit(): Int { 

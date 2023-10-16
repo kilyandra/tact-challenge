@@ -161,7 +161,7 @@ contract Task5 with Deployable {
 
   receive(msg: AdminWithdrawalAllNFTs) {
     require(sender() == self.owner, "Insufficient privelegies");
-    /*require(self.count > 0, "No nft");
+    require(self.count > 0, "No nft");
     require(context().value >= self.count * ton("0.08") + ton("1"), "Insufficent funds");
 
     repeat(self.count){
@@ -181,7 +181,7 @@ contract Task5 with Deployable {
         }.toCell()
       });
     }
-    self.nfts = emptyMap(); */
+    self.nfts = emptyMap();
   }
 
   get fun profit(): Int { 

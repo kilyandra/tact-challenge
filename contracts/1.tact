@@ -11,7 +11,7 @@ message Subtract {
 }
 
 contract Task1 with Deployable {
-    counter: Int as int8;
+    counter: Int as int16;
 
     init() {
       self.counter = 0;

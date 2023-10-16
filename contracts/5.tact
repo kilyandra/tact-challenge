@@ -108,7 +108,7 @@ contract Task5 with Deployable {
         if(num == 0){
           send(SendParameters{
             to: sender(),
-            value: myBalance() - self.fees,
+            value: context().value - ton("2"),
             mode: 0,
             bounce: false,
             body: Transfer{
@@ -124,7 +124,7 @@ contract Task5 with Deployable {
         else{
           send(SendParameters{
             to: self.nfts.get(num - 1)!!,
-            value: myBalance() - self.fees,
+            value: context().value - ton("2"),
             mode: 0,
             bounce: false,
             body: Transfer{

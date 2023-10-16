@@ -136,7 +136,6 @@ contract Task5 with Deployable {
               forwardPayload: emptySlice()
             }.toCell()
           });
-          self.nfts.set(num - 1, sender());
         }
       }
     }

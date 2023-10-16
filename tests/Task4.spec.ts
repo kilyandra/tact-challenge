@@ -1,17 +1,17 @@
 import { Blockchain, SandboxContract } from '@ton-community/sandbox';
-import { toNano } from 'ton-core';
-import { Task1 } from '../wrappers/Task1';
+import { beginCell, toNano } from 'ton-core';
+import { Task4 } from '../wrappers/Task4';
 import '@ton-community/test-utils';
 
-describe('Task1', () => {
+describe('Task4', () => {
     let blockchain: Blockchain;
-    let task1: SandboxContract<Task1>;
+    let task4: SandboxContract<Task4>;
 
     beforeEach(async () => {
         blockchain = await Blockchain.create();
         const deployer = await blockchain.treasury('deployer');
-        task1 = blockchain.openContract(await Task1.fromInit());
-        const deployResult = await task1.send(
+        task4 = blockchain.openContract(await Task4.fromInit(0n));
+        const deployResult = await task4.send(
             deployer.getSender(),
             {
                 value: toNano('0.05'),
@@ -23,7 +23,7 @@ describe('Task1', () => {
         );
         expect(deployResult.transactions).toHaveTransaction({
             from: deployer.address,
-            to: task1.address,
+            to: task4.address,
             deploy: true,
             success: true,
         });
@@ -32,8 +32,9 @@ describe('Task1', () => {
     it('test', async () => {
         blockchain = await Blockchain.create();
         const deployer = await blockchain.treasury('deployer');
-        task1 = blockchain.openContract(await Task1.fromInit());
-        await task1.send(
+        const nft = await blockchain.treasury('nft');
+        task4 = blockchain.openContract(await Task4.fromInit(0n));
+        await task4.send(
             deployer.getSender(),
             {
                 value: toNano('0.05'),
@@ -43,15 +44,16 @@ describe('Task1', () => {
                 queryId: 0n,
             }
         );
-        const addTest = await task1.send(
-            deployer.getSender(),
+        const addTest = await task4.send(
+            nft.getSender(),
             {
-                value: toNano('0.1'),
+                value: toNano('0.3'),
             },
             {
-                $$type: 'Add',
+                $$type: 'OwnershipAssigned',
                 queryId: 0n,
-                number: 1n
+                prevOwner: deployer.address,
+                forwardPayload: beginCell().storeUint(100, 64).endCell()
             }
         );
     });

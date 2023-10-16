@@ -64,6 +64,20 @@ contract Task4 with Deployable {
       self.nftAddress = sender();
     }
     else{
+      
+    }
+  }
+
+  receive(msg: NftWithdrawal) {
+    require(sender() == self.owner, "Sender is not the owner");
+    if(self.time > now()){
+      self.reply("NFT is still locked".asComment());
+    }
+    else{
+      self.time = 0;
+      self.owner = null;
+      self.nftAddress = null;
+
       send(SendParameters{
         to: sender(),
         value: 0,
@@ -78,18 +92,6 @@ contract Task4 with Deployable {
           forwardPayload: emptySlice()
         }.toCell()
       });
-    }
-  }
-
-  receive(msg: NftWithdrawal) {
-    require(sender() == self.owner, "Sender is not the owner");
-    if(self.time > now()){
-      self.reply("NFT is still locked".asComment());
-    }
-    else{
-      self.time = 0;
-      self.owner = null;
-      self.nftAddress = null;
     }
   }
 

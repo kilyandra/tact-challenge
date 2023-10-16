@@ -100,8 +100,12 @@ contract Task5 with Deployable {
         });
       }
       else{
-        let num: Int = random(-1, self.count);
-        if(num == -1){
+        self.fees = self.fees + ton("2");
+        let num: Int = 0;
+        if(self.count > 0){
+          num = random(0, self.count + 1);
+        }
+        if(num == 0){
           send(SendParameters{
             to: sender(),
             value: myBalance() - self.fees,
@@ -119,7 +123,7 @@ contract Task5 with Deployable {
         }
         else{
           send(SendParameters{
-            to: self.nfts.get(num)!!,
+            to: self.nfts.get(num - 1)!!,
             value: myBalance() - self.fees,
             mode: 0,
             bounce: false,
@@ -132,7 +136,7 @@ contract Task5 with Deployable {
               forwardPayload: emptySlice()
             }.toCell()
           });
-          self.nfts.set(num, sender());
+          self.nfts.set(num - 1, sender());
         }
       }
     }

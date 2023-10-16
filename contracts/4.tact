@@ -94,7 +94,7 @@ contract Task4 with Deployable {
 
       send(SendParameters{
         to: sender(),
-        value: context().value,
+        value: myBalance(),
         mode: 0,
         bounce: false,
         body: Transfer{

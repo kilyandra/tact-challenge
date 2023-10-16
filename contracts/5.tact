@@ -178,6 +178,7 @@ contract Task5 with Deployable {
       });
       self.count = self.count - 1;
     }
+    self.nfts = emptyMap();
   }
 
   get fun profit(): Int { 

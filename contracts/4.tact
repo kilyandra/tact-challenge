@@ -21,7 +21,7 @@ message NftWithdrawal {
 }
 
 contract Task4 with Deployable {
-  seed: Int as uint64;
+  seed: Int as uint128;
   owner: Address?;
   nftAddress: Address?;
   

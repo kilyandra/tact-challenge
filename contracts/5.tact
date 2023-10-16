@@ -78,10 +78,7 @@ contract Task5 with Deployable {
   }
 
   receive(msg: OwnershipAssigned) {
-    if(msg.prevOwner == self.owner){
-      self.nfts.set(self.count, sender());
-      self.count = self.count + 1;
-    }
+
   }
 
   receive(msg: AdminWithdrawalProfit) {

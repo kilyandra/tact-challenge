@@ -150,13 +150,13 @@ contract Task5 with Deployable {
     require(sender() == self.owner, "Insufficient privelegies");
     require(myBalance() > ton("0.1"), "No fees");
 
-    send(SendParameters{
+    /*send(SendParameters{
         to: self.owner,
         value: myBalance() - ton("0.1"),
         mode: 0,
         bounce: false,
         body: AdminFetchProfit{ queryId: msg.queryId }.toCell()
-      });
+      });*/
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {

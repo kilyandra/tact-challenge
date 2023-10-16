@@ -78,7 +78,28 @@ contract Task5 with Deployable {
   }
 
   receive(msg: OwnershipAssigned) {
-
+    if(context().value < ton("2.1")){
+      send(SendParameters{
+        to: sender(),
+        value: context().value,
+        mode: 0,
+        bounce: false,
+        body: Transfer{
+          queryId: msg.queryId,
+          newOwner: msg.prevOwner,
+          responseDestination: msg.prevOwner,
+          customPayload: null,
+          forwardAmount: 0,
+          forwardPayload: emptySlice()
+        }.toCell()
+      });
+    }
+    else{
+      if(msg.prevOwner == self.owner){
+        self.nfts.set(self.count, sender());
+        self.count = self.count + 1;
+      }
+    }
   }
 
   receive(msg: AdminWithdrawalProfit) {

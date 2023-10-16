@@ -114,6 +114,7 @@ contract Task5 with Deployable {
             forwardPayload: emptySlice()
           }.toCell()
         });
+        self.fees = self.fees + ton("2");
       }
     }
   }

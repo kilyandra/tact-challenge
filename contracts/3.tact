@@ -81,10 +81,11 @@ contract Task3 with Deployable {
         bounce: false,
         body: TokenTransfer{
           queryId: 0,
-          newOwner: sender(),
+          amount: amount,
+          destination: sender(),
           responseDestination: myAddress(),
           customPayload: null,
-          forwardAmount: ton("0.01"),
+          forwardTonAmount: ton("0.01"),
           forwardPayload: emptySlice()
         }.toCell()
       });

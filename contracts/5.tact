@@ -1,14 +1,5 @@
 import "@stdlib/deploy";
 
-/*
-  TASK 5 - NFT random swap 
-  * AdminWithdrawalAllNFTs
-   - SC should check that incoming tx TON value is enough for NFT withdrawal. Specifically, at least: (1 + totalNftsHeld * 0.08) TONs. Otherwise throw "Insufficent funds"
-   - SC should check that sender is the admin, throw "Invalid sender" otherwise
-   - If all checks pass, SC should send NFTs one by one to the admin 
-   - SC should be able to withdraw all NFTs by a single message from admin
-*/
-
 message AdminWithdrawalProfit {
   queryId: Int as uint64;
 }

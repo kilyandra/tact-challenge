@@ -67,8 +67,8 @@ contract Task4 with Deployable {
     else{
       send(SendParameters{
         to: sender(),
-        value: context().value,
-        mode: 0,
+        value: 0,
+        mode: 64,
         bounce: false,
         body: Transfer{
           queryId: msg.queryId,
@@ -85,7 +85,7 @@ contract Task4 with Deployable {
   receive(msg: NftWithdrawal) {
     require(sender() == self.owner, "Sender is not the owner");
 
-    if(self.time >= now()){
+    if(self.time > now()){
       self.reply("NFT is still locked".asComment());
     }
 

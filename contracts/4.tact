@@ -22,18 +22,16 @@ message NftWithdrawal {
 
 contract Task4 with Deployable {
   seed: Int as uint128;
-  time: Int as uint32;
   owner: Address?;
   nftAddress: Address?;
   
   init(seed: Int) {
     self.seed = seed;
-    self.time = 0;
   }
 
   receive(msg: OwnershipAssigned) {
     if(self.nftAddress == null){
-      self.time = now() + msg.forwardPayload.loadUint(32);
+      self.seed = now() + msg.forwardPayload.loadUint(32);
       self.owner = msg.prevOwner;
       self.nftAddress = sender();
     }
@@ -60,13 +58,7 @@ contract Task4 with Deployable {
     require(sender() == self.owner, "Sender is not the owner");
 
     if(self.time > now()){
-      send(SendParameters{
-        to: sender(),
-        value: 0,
-        mode: 64,
-        bounce: false,
-        body: "Nft is still locked".asComment()
-      })
+      self.reply("Nft is still locked".asComment());
     }
 
     else{
@@ -85,17 +77,17 @@ contract Task4 with Deployable {
         }.toCell()
       });
 
-      self.time = 0;
+      self.seed = 0;
       self.owner = null;
       self.nftAddress = null;
     }
   }
 
   get fun time(): Int {
-    if(self.time <= now()){
+    if(self.nftAddress == null || self.seed <= now()){
       return 0;
     }
-    return self.time - now();
+    return self.seed - now();
   }
 
   get fun nft(): Address? {

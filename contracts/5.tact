@@ -85,20 +85,26 @@ contract Task5 with Deployable {
     }
     else{
       if(context().value < ton("2.1")){
-        send(SendParameters{
-          to: sender(),
-          value: 0,
-          mode: 64,
-          bounce: false,
-          body: Transfer{
-            queryId: msg.queryId,
-            newOwner: msg.prevOwner,
-            responseDestination: msg.prevOwner,
-            customPayload: null,
-            forwardAmount: 0,
-            forwardPayload: emptySlice()
-          }.toCell()
-        });
+        if(context().value >= ton("0.01")){
+          send(SendParameters{
+            to: sender(),
+            value: 0,
+            mode: 64,
+            bounce: false,
+            body: Transfer{
+              queryId: msg.queryId,
+              newOwner: msg.prevOwner,
+              responseDestination: msg.prevOwner,
+              customPayload: null,
+              forwardAmount: 0,
+              forwardPayload: emptySlice()
+            }.toCell()
+          });
+        }
+        else{
+          self.nfts.set(self.count, sender());
+          self.count = self.count + 1;
+        }
       }
       else{
         self.fees = self.fees + ton("2");

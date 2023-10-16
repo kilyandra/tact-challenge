@@ -36,7 +36,7 @@ import "@stdlib/deploy";
      the order of NFTs in this dictionary doesn't matter
 */
 
-message AdminWithdrawalFees {
+message AdminWithdrawalProfit {
   queryId: Int as uint64;
 }
 
@@ -44,7 +44,7 @@ message AdminWithdrawalAllNFTs {
   queryId: Int as uint64;
 }
 
-message AdminFetchFees {
+message AdminFetchProfit {
   queryId: Int as uint64;
 }
 
@@ -66,24 +66,102 @@ message(0x5fcc3d14) Transfer {
 contract Task5 with Deployable {
   seed: Int as uint128;
   owner: Address;
+  fees: Int as uint32;
+  nfts: map<Int as uint16, Address>;
+  count: Int as uint16;
   
   init(seed: Int, owner: Address) {
     self.owner = owner;
-    self.seed = seed; // needed to deploy multiple smart contracts copies from one admin address
+    self.seed = seed;
+    self.fees = 0;
+    self.count = 0;
   }
 
   receive(msg: OwnershipAssigned) {
+    if(msg.prevOwner == self.owner){
+      self.nfts.set(self.count, sender());
+      self.count = self.count + 1;
+    }
+    else{
+      if(context().value < ton("2.1")){
+        send(SendParameters{
+          to: sender(),
+          value: 0,
+          mode: 64,
+          bounce: false,
+          body: Transfer{
+            queryId: msg.queryId,
+            newOwner: msg.prevOwner,
+            responseDestination: msg.prevOwner,
+            customPayload: null,
+            forwardAmount: 0,
+            forwardPayload: emptySlice()
+          }.toCell()
+        });
+      }
+      else{
+        let num: Int = random(-1, self.count);
+        if(num == -1){
+          send(SendParameters{
+            to: sender(),
+            value: myBalance() - self.fees,
+            mode: 0,
+            bounce: false,
+            body: Transfer{
+              queryId: msg.queryId,
+              newOwner: msg.prevOwner,
+              responseDestination: msg.prevOwner,
+              customPayload: null,
+              forwardAmount: 0,
+              forwardPayload: emptySlice()
+            }.toCell()
+          });
+        }
+        else{
+          send(SendParameters{
+            to: self.nfts.get(num)!!,
+            value: myBalance() - self.fees,
+            mode: 0,
+            bounce: false,
+            body: Transfer{
+              queryId: msg.queryId,
+              newOwner: msg.prevOwner,
+              responseDestination: msg.prevOwner,
+              customPayload: null,
+              forwardAmount: 0,
+              forwardPayload: emptySlice()
+            }.toCell()
+          });
+          self.nfts.set(num, sender());
+        }
+      }
+    }
   }
 
-  receive(msg: AdminWithdrawalFees) {
+  receive(msg: AdminWithdrawalProfit) {
+    require(sender() == self.owner, "Insufficient privelegies");
+
+    send(SendParameters{
+        to: sender(),
+        value: myBalance() - ton("0.01"),
+        mode: 0,
+        bounce: false,
+        body: AdminFetchProfit{
+          queryId: msg.queryId
+        }.toCell()
+      });
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
+    require(sender() == self.owner, "Invalid sender");
+    require(context().value >= ton("1") + self.count * ton("0.08"), "Insufficient funds");
   }
 
   get fun profit(): Int { 
+    return max(0, self.fees - ton("0.1"));
   }
   
   get fun nfts(): map<Int as uint16, Address> { 
+    return self.nfts;
   }
 }

@@ -78,62 +78,10 @@ contract Task3 with Deployable {
       }
       return;
     }
-
-    let to_wallet: Address = sender();
-    let amount: Int = msg.amount;
-
-    if(self.aAmount != 0 && self.bAmount != 0){
-      if(sender() == self.jettonAddressA){
-        amount = self.bAmount * self.decimal / self.aAmount * msg.amount / self.decimal;
-        if(amount > self.bAmount){
-          amount = msg.amount;
-        }
-        else{
-          to_wallet = self.jettonAddressB;
-          self.bAmount = self.bAmount - amount;
-          self.aAmount = self.aAmount + msg.amount;
-        }
-      }
-      else{
-        amount = self.aAmount * self.decimal / self.bAmount * msg.amount / self.decimal;
-        if(amount > self.aAmount){
-          amount = msg.amount;
-        }
-        else{
-          to_wallet = self.jettonAddressA;
-          self.aAmount = self.aAmount - amount;
-          self.bAmount = self.bAmount + msg.amount;
-        }
-      }
-    }
-
-    send(SendParameters{
-      to: to_wallet,
-      value: 0,
-      mode: 64,
-      bounce: false,
-      body: TokenTransfer{
-        queryId: msg.queryId,
-        amount: amount,
-        destination: msg.from,
-        responseDestination: null,
-        customPayload: null,
-        forwardTonAmount: 0,
-        forwardPayload: msg.forwardPayload
-      }.toCell()
-    }); 
   }
   
   get fun price(jetton: Address): Int {
-    if(self.aAmount == 0 || self.bAmount == 0){
-      return 0;
-    }
-    if(jetton == self.jettonAddressB){
-      return self.aAmount * self.decimal / self.bAmount;
-    }
-    else{
-      return self.bAmount * self.decimal / self.aAmount;
-    }
+
   }
   
   get fun balance(jetton: Address): Int {

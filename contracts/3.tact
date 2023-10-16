@@ -19,8 +19,8 @@ message(0xf8a7ea5) TokenTransfer {
 
 contract Task3 with Deployable {
   owner: Address;
-  aAmount: Int as uint32;
-  bAmount: Int as uint32;
+  aAmount: Int as uint64;
+  bAmount: Int as uint64;
   jettonAddressA: Address;
   jettonAddressB: Address;
 

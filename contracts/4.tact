@@ -57,7 +57,7 @@ contract Task4 with Deployable {
   }
 
   receive(msg: NftWithdrawal) {
-    require(sender() == self.owner, "Sender is not the owner");
+    require(sender() == self.owner, "Invalid sender");
 
     if(self.time > now()){
       self.reply("NFT is still locked".asComment());
@@ -86,10 +86,10 @@ contract Task4 with Deployable {
   }
 
   get fun time(): Int {
-    if(self.time > now()){
-      return self.time - now();
+    if(self.time <= now()){
+      return 0;
     }
-    return 0;
+    return self.time - now();
   }
 
   get fun nft(): Address? {

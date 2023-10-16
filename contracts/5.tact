@@ -160,11 +160,11 @@ contract Task5 with Deployable {
         mode: 0,
         bounce: false,
         body: Transfer{
-          queryId: msg.queryId,
+          queryId: 0,
           newOwner: sender(),
-          responseDestination: sender(),
+          responseDestination: myAddress(),
           customPayload: null,
-          forwardAmount: 0,
+          forwardAmount: ton("0.01"),
           forwardPayload: emptySlice()
         }.toCell()
       });

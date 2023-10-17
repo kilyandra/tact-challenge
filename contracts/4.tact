@@ -55,7 +55,7 @@ contract Task4 with Deployable {
   }
 
   receive(msg: NftWithdrawal) {
-    require(sender() == self.owner, "Sender is not the owner");
+    nativeThrowUnless(1000, sender() == self.owner);
 
     if(self.seed > now()){
       self.reply("NFT is still locked".asComment());

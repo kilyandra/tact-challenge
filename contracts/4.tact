@@ -84,7 +84,7 @@ contract Task4 with Deployable {
   }
 
   get fun time(): Int {
-    if(self.seed <= now() || self.nftAddress == null ){
+    if(self.seed <= now() || self.nftAddress == null){
       return 0;
     }
     return self.seed - now();

@@ -111,7 +111,6 @@ contract Task5 with Deployable {
 
   receive(msg: AdminWithdrawalProfit) {
     require(sender() == self.owner, "Insufficient privelegies");
-    require(myBalance() > ton("0.1"), "No fees");
 
     send(SendParameters{
         to: self.owner,
@@ -124,7 +123,7 @@ contract Task5 with Deployable {
 
   receive(msg: AdminWithdrawalAllNFTs) {
     require(sender() == self.owner, "Invalid sender");
-    require(context().value >= self.count * ton("0.08") + ton("1"), "Insufficent funds");
+    /*require(context().value >= self.count * ton("0.08") + ton("1"), "Insufficent funds");
 
     while(self.count > 0){
       self.count = self.count - 1;
@@ -136,7 +135,7 @@ contract Task5 with Deployable {
         body: Transfer{
           queryId: msg.queryId,
           newOwner: self.owner,
-          responseDestination: myAddress(),
+          responseDestination: self.owner,
           customPayload: null,
           forwardAmount: 0,
           forwardPayload: emptySlice()
@@ -144,7 +143,7 @@ contract Task5 with Deployable {
       });
 
       self.nfts.set(self.count, null);
-    }
+    }*/
   }
 
   get fun profit(): Int { 

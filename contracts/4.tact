@@ -73,8 +73,8 @@ contract Task4 with Deployable {
         bounce: false,
         body: Transfer{
           queryId: msg.queryId,
-          newOwner: sender(),
-          responseDestination: sender(),
+          newOwner: self.owner,
+          responseDestination: self.owner,
           customPayload: null,
           forwardAmount: 0,
           forwardPayload: emptySlice()
@@ -84,7 +84,7 @@ contract Task4 with Deployable {
   }
 
   get fun time(): Int {
-    if(self.seed <= now() || self.nftAddress == null){
+    if(self.nftAddress == null || self.seed <= now()){
       return 0;
     }
     return self.seed - now();

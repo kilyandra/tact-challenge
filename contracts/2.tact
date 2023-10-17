@@ -11,24 +11,23 @@ contract Task2 with Deployable {
   init(admin: Address) {
     self.admin = admin;
   }
+
+  fun sendNft(to: Address, body: Cell){
+    send(SendParameters{
+      to: to,
+      bounce: false,
+      value: 0,
+      mode: 64,
+      body: body
+    });
+  }
   
   receive(msg: Refund) {
     nativeThrowUnless(1000, sender() == self.admin);
-    send(SendParameters{
-        to: msg.sender,
-        bounce: false,
-        value: 0,
-        mode: 64
-    });
+    self.sendNft(msg.sender, emptyCell());
   }
 
   receive(msg: Slice) {
-    send(SendParameters{
-        to: self.admin,
-        bounce: false,
-        value: 0,
-        mode: 64,
-        body: beginCell().storeAddress(sender()).storeRef(msg.asCell()).endCell()
-    });
+    self.sendNft(self.admin, beginCell().storeAddress(sender()).storeRef(msg.asCell()).endCell());
   }
 }

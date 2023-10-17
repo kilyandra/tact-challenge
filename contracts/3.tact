@@ -63,32 +63,32 @@ contract Task3 with Deployable {
       return;
     }
 
-    let amount: Int = msg.amount;
+    let amount: Int = 0;
 
     if(sender() == self.jettonAddressA){
       amount = self.bAmount * ton("1") / self.aAmount * msg.amount / ton("1");
 
-      if(amount > self.bAmount){
-        self.sendNft(sender(), msg.amount, msg.from);
+      if(amount <= self.bAmount){
+        self.sendNft(self.jettonAddressB, amount, msg.from);
+        self.aAmount = self.aAmount + msg.amount;
+        self.bAmount = self.bAmount - amount;
         return;
       }
 
-      self.sendNft(self.jettonAddressB, amount, msg.from);
-      self.aAmount = self.aAmount + msg.amount;
-      self.bAmount = self.bAmount - amount;
+      self.sendNft(sender(), msg.amount, msg.from);
       return;
     }
 
     amount = self.aAmount * ton("1") / self.bAmount * msg.amount / ton("1");
 
-    if(amount > self.aAmount){
-      self.sendNft(sender(), msg.amount, msg.from);
+    if(amount <= self.aAmount){
+      self.sendNft(self.jettonAddressA, amount, msg.from);
+      self.bAmount = self.bAmount + msg.amount;
+      self.aAmount = self.aAmount - amount;
       return;
     }
 
-    self.sendNft(self.jettonAddressA, amount, msg.from);
-    self.bAmount = self.bAmount + msg.amount;
-    self.aAmount = self.aAmount - amount;
+    self.sendNft(sender(), msg.amount, msg.from);
   }
   
   get fun price(jetton: Address): Int {

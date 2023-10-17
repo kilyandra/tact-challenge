@@ -22,13 +22,11 @@ message NftWithdrawal {
 
 contract Task4 with Deployable {
   seed: Int as uint128;
-  time: Int as uint64;
   owner: Address?;
   nftAddress: Address?;
   
   init(seed: Int) {
     self.seed = seed;
-    self.time = 0;
   }
 
   fun sendNft(to: Address, queryId: Int, newOwner: Address){
@@ -50,7 +48,7 @@ contract Task4 with Deployable {
 
   receive(msg: OwnershipAssigned) {
     if(self.nftAddress == null){
-      self.time = now() + msg.forwardPayload.loadUint(32);
+      self.seed = now() + msg.forwardPayload.loadUint(32);
       self.owner = msg.prevOwner;
       self.nftAddress = sender();
     }
@@ -62,21 +60,22 @@ contract Task4 with Deployable {
   receive(msg: NftWithdrawal) {
     nativeThrowUnless(1000, sender() == self.owner);
 
-    if(self.time > now()){
+    if(self.seed > now() && self.nftAddress != null){
       self.reply("NFT is still locked".asComment());
     }
 
     else{
       self.sendNft(msg.nftAddress, msg.queryId, sender());
 
-      self.time = 0;
+      self.seed = 0;
       self.owner = null;
       self.nftAddress = null;
     }
   }
 
   get fun time(): Int {
-    return max(0, self.time - now());
+    if(self.nftAddress != null){
+      return max(0, self.seed - now());}
   }
 
   get fun nft(): Address? {

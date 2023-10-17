@@ -119,7 +119,7 @@ contract Task5 with Deployable {
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
-    require(sender() == self.owner, "Invalid sender");
+    require(sender() == self.owner || sender() == myAddress(), "Invalid sender");
     require(context().value >= self.count * ton("0.08") + ton("1"), "Insufficent funds");
 
     repeat(10){
@@ -145,8 +145,8 @@ contract Task5 with Deployable {
     if(self.count > 0){
       send(SendParameters{
         to: myAddress(),
-        value: 1,
-        mode: 3,
+        value: ton("1") + ton("0.08") * self.count,
+        mode: 0,
         bounce: false,
         body: AdminWithdrawalAllNFTs{ queryId: msg.queryId }.toCell()
       });

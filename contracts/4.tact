@@ -28,6 +28,7 @@ contract Task4 with Deployable {
   
   init(seed: Int) {
     self.seed = seed;
+    self.time = 0;
   }
 
   receive(msg: OwnershipAssigned) {

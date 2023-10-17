@@ -29,7 +29,7 @@ message(0x5fcc3d14) Transfer {
 
 contract Task5 with Deployable {
   owner: Address;
-  seed: Int as uint128;
+  seed: Int as uint16;
   nfts: map<Int as uint16, Address>;
   
   init(seed: Int, owner: Address) {

@@ -88,8 +88,9 @@ contract Task5 with Deployable {
         }
 
         else{
+          num = num - 1;
           send(SendParameters{
-            to: self.nfts.get(num - 1)!!,
+            to: self.nfts.get(num)!!,
             value: context().value - ton("2"),
             mode: 0,
             bounce: false,
@@ -103,14 +104,14 @@ contract Task5 with Deployable {
             }.toCell()
           });
 
-          self.nfts.set(num - 1, sender());
+          self.nfts.set(num, sender());
         }
       }
     }
   }
 
   receive(msg: AdminWithdrawalProfit) {
-    require(sender() == self.owner, "Insufficient privelegies");
+    /*require(sender() == self.owner, "Insufficient privelegies");*/
 
     send(SendParameters{
         to: self.owner,
@@ -124,13 +125,12 @@ contract Task5 with Deployable {
   receive(msg: AdminWithdrawalAllNFTs) {
     require(sender() == self.owner, "Invalid sender");
     require(context().value >= self.count * ton("0.08") + ton("1"), "Insufficent funds");
-    let amount: Int = self.count;
 
     while(self.count > 0){
       self.count = self.count - 1;
       send(SendParameters{
         to: self.nfts.get(self.count)!!,
-        value: ton("0.08") + ton("1") / amount,
+        value: ton("0.08"),
         mode: 0,
         bounce: false,
         body: Transfer{

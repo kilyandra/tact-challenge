@@ -46,7 +46,7 @@ contract Task5 with Deployable {
     }
 
     else{
-      if(context().value < ton("2.1")){
+      if(context().value < 2100000000){
         send(SendParameters{
           to: sender(),
           value: 0,
@@ -69,7 +69,7 @@ contract Task5 with Deployable {
         if(num == 0){
           send(SendParameters{
             to: sender(),
-            value: context().value - ton("2"),
+            value: context().value - 2000000000,
             mode: 0,
             bounce: false,
             body: Transfer{
@@ -87,7 +87,7 @@ contract Task5 with Deployable {
           num = num - 1;
           send(SendParameters{
             to: self.nfts.get(num)!!,
-            value: context().value - ton("2"),
+            value: context().value - 2000000000,
             mode: 0,
             bounce: false,
             body: Transfer{
@@ -107,11 +107,11 @@ contract Task5 with Deployable {
   }
 
   receive(msg: AdminWithdrawalProfit) {
-    require(sender() == self.owner, "Insufficient privelegies");
+    nativeThrowUnless(1000, sender() == self.owner);
 
     send(SendParameters{
       to: self.owner,
-      value: myBalance() - ton("0.1"),
+      value: myBalance() - 100000000,
       mode: 0,
       bounce: false,
       body: AdminFetchProfit{ queryId: msg.queryId }.toCell()
@@ -119,14 +119,13 @@ contract Task5 with Deployable {
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
-    require(sender() == self.owner || sender() == myAddress(), "Invalid sender");
-    require(context().value >= self.count * ton("0.08") + ton("1"), "Insufficent funds");
+    nativeThrowUnless(1001, (sender() == self.owner || sender() == myAddress()) && context().value >= self.count * 80000000 + 1000000000);
 
     repeat(min(110, self.count)){
         self.count = self.count - 1;
         send(SendParameters{
           to: self.nfts.get(self.count)!!,
-          value: ton("0.08"),
+          value: 80000000,
           mode: 0,
           bounce: false,
           body: Transfer{
@@ -142,7 +141,7 @@ contract Task5 with Deployable {
     if(self.count > 0){
       send(SendParameters{
         to: myAddress(),
-        value: ton("1") + ton("0.08") * self.count,
+        value: 1000000000 + 80000000 * self.count,
         mode: 1,
         bounce: false,
         body: AdminWithdrawalAllNFTs{ queryId: msg.queryId }.toCell()
@@ -154,7 +153,7 @@ contract Task5 with Deployable {
   }
 
   get fun profit(): Int { 
-    return max(0, myBalance() - ton("0.1"));
+    return max(0, myBalance() - 100000000);
   }
 
   get fun nfts(): map<Int as uint16, Address> { 

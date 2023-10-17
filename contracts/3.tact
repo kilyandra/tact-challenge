@@ -32,24 +32,6 @@ contract Task3 with Deployable {
     self.bAmount = 0;
   }
 
-  fun sendNft(to: Address, amount: Int, destination: Address){
-    send(SendParameters{
-      to: to,
-      value: 0,
-      mode: 64,
-      bounce: false,
-      body: TokenTransfer{
-        queryId: 0,
-        amount: amount,
-        destination: destination,
-        responseDestination: myAddress(),
-        customPayload: null,
-        forwardTonAmount: ton("0.01"),
-        forwardPayload: emptySlice()
-      }.toCell()
-    });
-  }
-
   receive(msg: TokenNotification) {
     nativeThrowUnless(135, sender() == self.jettonAddressA || sender() == self.jettonAddressB);
 
@@ -63,30 +45,76 @@ contract Task3 with Deployable {
       return;
     }
 
-    let amount: Int = self.bAmount * ton("1") / self.aAmount * msg.amount / ton("1");
+    let amount: Int = 0;
 
     if(sender() == self.jettonAddressA){
+      amount = self.bAmount * ton("1") / self.aAmount * msg.amount / ton("1");
+
       if(amount <= self.bAmount){
-        self.sendNft(self.jettonAddressB, amount, msg.from);
+        send(SendParameters{
+          to: self.jettonAddressB,
+          value: 0,
+          mode: 64,
+          bounce: false,
+          body: TokenTransfer{
+            queryId: 0,
+            amount: amount,
+            destination: msg.from,
+            responseDestination: myAddress(),
+            customPayload: null,
+            forwardTonAmount: ton("0.01"),
+            forwardPayload: emptySlice()
+          }.toCell()
+        });
         self.aAmount = self.aAmount + msg.amount;
         self.bAmount = self.bAmount - amount;
         return;
       }
 
-      self.sendNft(sender(), msg.amount, msg.from);
+      self.reply(TokenTransfer{
+          queryId: 0,
+          amount: msg.amount,
+          destination: msg.from,
+          responseDestination: myAddress(),
+          customPayload: null,
+          forwardTonAmount: ton("0.01"),
+          forwardPayload: emptySlice()
+        }.toCell());
       return;
     }
 
     amount = self.aAmount * ton("1") / self.bAmount * msg.amount / ton("1");
 
     if(amount <= self.aAmount){
-      self.sendNft(self.jettonAddressA, amount, msg.from);
+      send(SendParameters{
+          to: self.jettonAddressA,
+          value: 0,
+          mode: 64,
+          bounce: false,
+          body: TokenTransfer{
+            queryId: 0,
+            amount: amount,
+            destination: msg.from,
+            responseDestination: myAddress(),
+            customPayload: null,
+            forwardTonAmount: ton("0.01"),
+            forwardPayload: emptySlice()
+          }.toCell()
+        });
       self.bAmount = self.bAmount + msg.amount;
       self.aAmount = self.aAmount - amount;
       return;
     }
 
-    self.sendNft(sender(), msg.amount, msg.from);
+    self.reply(TokenTransfer{
+        queryId: 0,
+        amount: msg.amount,
+        destination: msg.from,
+        responseDestination: myAddress(),
+        customPayload: null,
+        forwardTonAmount: ton("0.01"),
+        forwardPayload: emptySlice()
+      }.toCell());
   }
   
   get fun price(jetton: Address): Int {

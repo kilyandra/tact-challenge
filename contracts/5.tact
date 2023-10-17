@@ -30,19 +30,17 @@ message(0x5fcc3d14) Transfer {
 contract Task5 with Deployable {
   owner: Address;
   seed: Int as uint128;
-  count: Int as uint16;
   nfts: map<Int as uint16, Address>;
   
   init(seed: Int, owner: Address) {
     self.owner = owner;
-    self.seed = seed;
-    self.count = 0;
+    self.seed = 0;
   }
 
   receive(msg: OwnershipAssigned) {
     if(msg.prevOwner == self.owner){
-      self.nfts.set(self.count, sender());
-      self.count = self.count + 1;
+      self.nfts.set(self.seed, sender());
+      self.seed = self.seed + 1;
     }
 
     else{
@@ -64,7 +62,7 @@ contract Task5 with Deployable {
       }
 
       else{
-        let num: Int = random(0, self.count);
+        let num: Int = random(0, self.seed);
 
         if(num == 0){
           send(SendParameters{
@@ -119,12 +117,12 @@ contract Task5 with Deployable {
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
-    nativeThrowUnless(1001, (sender() == self.owner || sender() == myAddress()) && context().value >= self.count * ton("0.08") + ton("1"));
+    nativeThrowUnless(1001, (sender() == self.owner || sender() == myAddress()) && context().value >= self.seed * ton("0.08") + ton("1"));
 
-    repeat(min(110, self.count)){
-        self.count = self.count - 1;
+    repeat(min(110, self.seed)){
+        self.seed = self.seed - 1;
         send(SendParameters{
-          to: self.nfts.get(self.count)!!,
+          to: self.nfts.get(self.seed)!!,
           value: ton("0.08"),
           mode: 0,
           bounce: false,
@@ -138,10 +136,10 @@ contract Task5 with Deployable {
           }.toCell()
         });
     }
-    if(self.count > 0){
+    if(self.seed > 0){
       send(SendParameters{
         to: myAddress(),
-        value: ton("1") + ton("0.08") * self.count,
+        value: ton("1") + ton("0.08") * self.seed,
         mode: 1,
         bounce: false,
         body: AdminWithdrawalAllNFTs{ queryId: msg.queryId }.toCell()

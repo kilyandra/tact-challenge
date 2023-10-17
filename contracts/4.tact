@@ -26,7 +26,7 @@ contract Task4 with Deployable {
   nftAddress: Address?;
   
   init(seed: Int) {
-    self.seed = seed;
+    self.seed = 0;
   }
 
   fun sendNft(to: Address, queryId: Int, newOwner: Address){

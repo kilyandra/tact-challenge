@@ -146,7 +146,7 @@ contract Task5 with Deployable {
       send(SendParameters{
         to: myAddress(),
         value: 1,
-        mode: 0,
+        mode: 3,
         bounce: false,
         body: AdminWithdrawalAllNFTs{ queryId: msg.queryId }.toCell()
       });

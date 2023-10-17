@@ -67,7 +67,7 @@ contract Task4 with Deployable {
     }
 
     else{
-      self.sendNft(sender(), msg.queryId, sender());
+      self.sendNft(msg.nftAddress, msg.queryId, sender());
 
       self.time = 0;
       self.owner = null;

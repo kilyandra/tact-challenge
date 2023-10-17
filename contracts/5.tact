@@ -67,7 +67,7 @@ contract Task5 with Deployable {
         let num: Int = random(0, self.count);
 
         if(num == 0){
-          send(SendParameters{
+          /*send(SendParameters{
             to: sender(),
             value: context().value - ton("2"),
             mode: 0,
@@ -80,7 +80,7 @@ contract Task5 with Deployable {
               forwardAmount: 0,
               forwardPayload: emptySlice()
             }.toCell()
-          });
+          });*/
         }
 
         else{
@@ -148,6 +148,6 @@ contract Task5 with Deployable {
   }
 
   get fun nfts(): map<Int as uint16, Address> { 
-    return null;
+    return self.nfts;
   }
 }

@@ -51,8 +51,8 @@ contract Task3 with Deployable {
   }
 
   receive(msg: TokenNotification) {
+    nativeThrowUnless(135, sender() == self.jettonAddressA || sender() == self.jettonAddressB);
     let sender: Address = context().sender;
-    nativeThrowUnless(135, sender == self.jettonAddressA || sender == self.jettonAddressB);
 
     if(msg.from == self.owner){
       if(sender == self.jettonAddressA){
@@ -76,7 +76,7 @@ contract Task3 with Deployable {
         return;
       }
 
-      self.sendNft(sender, msg.amount, msg.from);
+      self.sendNft(sender(), msg.amount, msg.from);
       return;
     }
 
@@ -89,7 +89,7 @@ contract Task3 with Deployable {
       return;
     }
 
-    self.sendNft(sender, msg.amount, msg.from);
+    self.sendNft(sender(), msg.amount, msg.from);
   }
   
   get fun price(jetton: Address): Int {

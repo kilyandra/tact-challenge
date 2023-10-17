@@ -130,8 +130,8 @@ contract Task5 with Deployable {
       self.count = self.count - 1;
       send(SendParameters{
         to: self.nfts.get(self.count)!!,
-        value: ton("0.1"),
-        mode: 0,
+        value: ton("0.08"),
+        mode: 1,
         bounce: false,
         body: Transfer{
           queryId: msg.queryId,

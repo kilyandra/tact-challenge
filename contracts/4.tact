@@ -53,7 +53,7 @@ contract Task4 with Deployable {
       self.nftAddress = sender();
       return;
     }
-
+    
     self.sendNft(sender(), msg.queryId, msg.prevOwner);
   }
 
@@ -66,13 +66,12 @@ contract Task4 with Deployable {
     }
 
     self.sendNft(msg.nftAddress, msg.queryId, sender());
-    self.seed = 0;
     self.owner = null;
     self.nftAddress = null;
   }
 
   get fun time(): Int {
-    return self.seed;
+    return max(0, self.seed - now());
   }
 
   get fun nft(): Address? {

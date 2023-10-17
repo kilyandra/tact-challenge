@@ -15,20 +15,20 @@ contract Task2 with Deployable {
   receive(msg: Refund) {
     nativeThrowUnless(132, sender() == self.admin);
     send(SendParameters{
-        to: msg.sender,
-        bounce: false,
-        value: 0,
-        mode: 64
+      to: msg.sender,
+      bounce: false,
+      value: 0,
+      mode: 64
     });
   }
 
   receive(msg: Slice) {
     send(SendParameters{
-        to: self.admin,
-        bounce: false,
-        value: 0,
-        mode: 64,
-        body: beginCell().storeAddress(sender()).storeRef(msg.asCell()).endCell()
+      to: self.admin,
+      bounce: false,
+      value: 0,
+      mode: 64,
+      body: beginCell().storeAddress(sender()).storeRef(msg.asCell()).endCell()
     });
   }
 }

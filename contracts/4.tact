@@ -21,12 +21,12 @@ message NftWithdrawal {
 }
 
 contract Task4 with Deployable {
-  seed: Int as uint128;
+  seed: Int? as uint32;
   owner: Address?;
   nftAddress: Address?;
   
   init(seed: Int) {
-    self.seed = seed;
+
   }
 
   receive(msg: OwnershipAssigned) {

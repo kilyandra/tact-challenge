@@ -107,7 +107,7 @@ contract Task5 with Deployable {
   }
 
   receive(msg: AdminWithdrawalProfit) {
-    require(sender() == self.owner, "1");
+    require(sender() == self.owner, "Insufficient privelegies");
 
     send(SendParameters{
       to: self.owner,
@@ -119,8 +119,8 @@ contract Task5 with Deployable {
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
-    require(sender() == self.owner || sender() == myAddress(), "1");
-    require(context().value >= self.count * ton("0.08") + ton("1"), "2");
+    require(sender() == self.owner || sender() == myAddress(), "Invalid sender");
+    require(context().value >= self.count * ton("0.08") + ton("1"), "Insufficent funds");
 
     repeat(min(150, self.count)){
       if(self.count > 0){

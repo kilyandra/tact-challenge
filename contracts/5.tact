@@ -134,7 +134,7 @@ contract Task5 with Deployable {
         mode: 0,
         bounce: false,
         body: Transfer{
-          queryId: query.id,
+          queryId: msg.queryId,
           newOwner: self.owner,
           responseDestination: self.owner,
           customPayload: null,

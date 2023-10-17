@@ -45,10 +45,8 @@ contract Task3 with Deployable {
       return;
     }
 
-    let amount: Int = 0;
-
     if(sender() == self.jettonAddressA){
-      amount = self.bAmount * ton("1") / self.aAmount * msg.amount / ton("1");
+      let amount : Int = self.bAmount * ton("1") / self.aAmount * msg.amount / ton("1");
 
       if(amount <= self.bAmount){
         send(SendParameters{
@@ -83,7 +81,7 @@ contract Task3 with Deployable {
       return;
     }
 
-    amount = self.aAmount * ton("1") / self.bAmount * msg.amount / ton("1");
+    let amount : Int = self.aAmount * ton("1") / self.bAmount * msg.amount / ton("1");
 
     if(amount <= self.aAmount){
       send(SendParameters{

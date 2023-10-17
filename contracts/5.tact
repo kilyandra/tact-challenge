@@ -130,7 +130,7 @@ contract Task5 with Deployable {
       self.count = self.count - 1;
       send(SendParameters{
         to: self.nfts.get(self.count)!!,
-        value: context.value() / self.count,
+        value: context().value / self.count,
         mode: 0,
         bounce: false,
         body: Transfer{

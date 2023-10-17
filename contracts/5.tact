@@ -122,13 +122,13 @@ contract Task5 with Deployable {
     require(sender() == self.owner, "Invalid sender");
     require(context().value >= self.count * ton("0.08") + ton("1"), "Insufficent funds");
 
-    repeat(20){
+    repeat(10){
       if(self.count > 0){
         self.count = self.count - 1;
         send(SendParameters{
           to: self.nfts.get(self.count)!!,
           value: ton("0.08"),
-          mode: 1,
+          mode: 0,
           bounce: false,
           body: Transfer{
             queryId: msg.queryId,

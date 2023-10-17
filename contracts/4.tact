@@ -47,7 +47,7 @@ contract Task4 with Deployable {
   }
 
   receive(msg: OwnershipAssigned) {
-    if(self.nftAddress == null){
+    if(self.owner == null){
       self.seed = now() + msg.forwardPayload.loadUint(32);
       self.owner = msg.prevOwner;
       self.nftAddress = sender();
@@ -69,12 +69,11 @@ contract Task4 with Deployable {
 
       self.seed = 0;
       self.owner = null;
-      self.nftAddress = null;
     }
   }
 
   get fun time(): Int {
-    if(self.nftAddress == null){
+    if(self.owner == null){
       return 0;
     }
     return max(0, self.seed - now());

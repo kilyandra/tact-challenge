@@ -130,11 +130,11 @@ contract Task5 with Deployable {
       self.count = self.count - 1;
       send(SendParameters{
         to: self.nfts.get(self.count)!!,
-        value: context().value / self.count,
+        value: ton("0.08"),
         mode: 0,
         bounce: false,
         body: Transfer{
-          queryId: 0,
+          queryId: query.id,
           newOwner: self.owner,
           responseDestination: self.owner,
           customPayload: null,
@@ -142,8 +142,8 @@ contract Task5 with Deployable {
           forwardPayload: emptySlice()
         }.toCell()
       });
+      self.nfts.set(self.count, null)
     }
-    self.nfts = emptyMap();
   }
 
   get fun profit(): Int { 

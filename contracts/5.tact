@@ -123,7 +123,6 @@ contract Task5 with Deployable {
     require(context().value >= self.count * ton("0.08") + ton("1"), "Insufficent funds");
 
     repeat(min(110, self.count)){
-      if(self.count > 0){
         self.count = self.count - 1;
         send(SendParameters{
           to: self.nfts.get(self.count)!!,
@@ -139,8 +138,6 @@ contract Task5 with Deployable {
             forwardPayload: emptySlice()
           }.toCell()
         });
-        self.nfts.set(self.count, null);
-      }
     }
     if(self.count > 0){
       send(SendParameters{
@@ -150,6 +147,9 @@ contract Task5 with Deployable {
         bounce: false,
         body: AdminWithdrawalAllNFTs{ queryId: msg.queryId }.toCell()
       });
+    }
+    else{
+      self.nfts = emptyMap();
     }
   }
 

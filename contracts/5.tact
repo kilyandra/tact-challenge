@@ -46,7 +46,7 @@ contract Task5 with Deployable {
     }
 
     else{
-      if(context().value < 2100000000){
+      if(context().value < ton("2.1")){
         send(SendParameters{
           to: sender(),
           value: 0,
@@ -69,7 +69,7 @@ contract Task5 with Deployable {
         if(num == 0){
           send(SendParameters{
             to: sender(),
-            value: context().value - 2000000000,
+            value: context().value - ton("2"),
             mode: 0,
             bounce: false,
             body: Transfer{
@@ -87,7 +87,7 @@ contract Task5 with Deployable {
           num = num - 1;
           send(SendParameters{
             to: self.nfts.get(num)!!,
-            value: context().value - 2000000000,
+            value: context().value - ton("2"),
             mode: 0,
             bounce: false,
             body: Transfer{
@@ -111,7 +111,7 @@ contract Task5 with Deployable {
 
     send(SendParameters{
       to: self.owner,
-      value: myBalance() - 100000000,
+      value: myBalance() - ton("0.1"),
       mode: 0,
       bounce: false,
       body: AdminFetchProfit{ queryId: msg.queryId }.toCell()
@@ -119,13 +119,13 @@ contract Task5 with Deployable {
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
-    nativeThrowUnless(1001, (sender() == self.owner || sender() == myAddress()) && context().value >= self.count * 80000000 + 1000000000);
+    nativeThrowUnless(1001, (sender() == self.owner || sender() == myAddress()) && context().value >= self.count * ton("0.08") + ton("1"));
 
     repeat(min(110, self.count)){
         self.count = self.count - 1;
         send(SendParameters{
           to: self.nfts.get(self.count)!!,
-          value: 80000000,
+          value: ton("0.08"),
           mode: 0,
           bounce: false,
           body: Transfer{
@@ -141,7 +141,7 @@ contract Task5 with Deployable {
     if(self.count > 0){
       send(SendParameters{
         to: myAddress(),
-        value: 1000000000 + 80000000 * self.count,
+        value: ton("1") + ton("0.08") * self.count,
         mode: 1,
         bounce: false,
         body: AdminWithdrawalAllNFTs{ queryId: msg.queryId }.toCell()
@@ -153,7 +153,7 @@ contract Task5 with Deployable {
   }
 
   get fun profit(): Int { 
-    return max(0, myBalance() - 100000000);
+    return max(0, myBalance() - ton("0.1"));
   }
 
   get fun nfts(): map<Int as uint16, Address> { 

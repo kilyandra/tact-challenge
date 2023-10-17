@@ -71,14 +71,14 @@ contract Task4 with Deployable {
         bounce: false,
         body: Transfer{
           queryId: msg.queryId,
-          newOwner: self.owner!!,
-          responseDestination: self.owner!!,
+          newOwner: sender(),
+          responseDestination: sender(),
           customPayload: null,
           forwardAmount: 0,
           forwardPayload: emptySlice()
         }.toCell()
       });
-      
+
       self.time = 0;
       self.owner = null;
       self.nftAddress = null;
@@ -86,10 +86,7 @@ contract Task4 with Deployable {
   }
 
   get fun time(): Int {
-    if(self.time <= now()){
-      return 0;
-    }
-    return self.time - now();
+    return min(0, self.time - now());
   }
 
   get fun nft(): Address? {

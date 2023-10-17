@@ -64,7 +64,7 @@ contract Task5 with Deployable {
       }
 
       else{
-        /*let num: Int = random(0, self.count);
+        let num: Int = 0;
 
         if(num == 0){
           send(SendParameters{
@@ -83,7 +83,7 @@ contract Task5 with Deployable {
           });
         }
 
-        else{
+        /*else{
           num = num - 1;
           send(SendParameters{
             to: self.nfts.get(num)!!,

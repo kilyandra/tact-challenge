@@ -74,7 +74,7 @@ contract Task4 with Deployable {
   }
 
   get fun time(): Int {
-    if(self.nftAddress != null){
+    if(self.nftAddress == null){
       return 0;
     }
     return max(0, self.seed - now());

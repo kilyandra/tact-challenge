@@ -77,7 +77,7 @@ contract Task3 with Deployable {
       return;
     }
 
-    amount = ton("1000000000") / amount;
+    amount = self.aAmount * ton("1") / self.bAmount * msg.amount / ton("1");
 
     if(amount <= self.aAmount){
       self.sendNft(self.jettonAddressA, amount, msg.from);

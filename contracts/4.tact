@@ -80,6 +80,9 @@ contract Task4 with Deployable {
   }
 
   get fun nft(): Address? {
+    if(self.owner == null){
+      return null;
+    }
     return self.nftAddress;
   }
 

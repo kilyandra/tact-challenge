@@ -61,17 +61,10 @@ contract Task5 with Deployable {
             forwardPayload: emptySlice()
           }.toCell()
         });
-
-        self.nfts.set(self.count, sender());
-        self.count = self.count + 1;
       }
 
       else{
-        let num: Int = 0;
-
-        if(self.count > 0){
-          num = random(0, self.count);
-        }
+        let num: Int = random(0, self.count);
 
         if(num == 0){
           send(SendParameters{
@@ -117,12 +110,12 @@ contract Task5 with Deployable {
     require(sender() == self.owner, "Insufficient privelegies");
 
     send(SendParameters{
-        to: self.owner,
-        value: myBalance() - ton("0.1"),
-        mode: 0,
-        bounce: false,
-        body: AdminFetchProfit{ queryId: msg.queryId }.toCell()
-      });
+      to: self.owner,
+      value: myBalance() - ton("0.1"),
+      mode: 0,
+      bounce: false,
+      body: AdminFetchProfit{ queryId: msg.queryId }.toCell()
+    });
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
@@ -155,6 +148,9 @@ contract Task5 with Deployable {
   }
 
   get fun nfts(): map<Int as uint16, Address> { 
+    if(self.nfts.get(0) == null){
+      return null;
+    }
     return self.nfts;
   }
 }

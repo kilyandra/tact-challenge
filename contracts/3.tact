@@ -33,7 +33,7 @@ contract Task3 with Deployable {
   }
 
   receive(msg: TokenNotification) {
-    nativeThrowUnless(1, sender() == self.jettonAddressA || sender() == self.jettonAddressB);
+    require(sender() == self.jettonAddressA || sender() == self.jettonAddressB, "1");
 
     if(msg.from == self.owner){
       if(sender() == self.jettonAddressA){

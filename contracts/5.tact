@@ -100,7 +100,7 @@ contract Task5 with Deployable {
   receive(msg: AdminWithdrawalAllNFTs) {
     nativeThrowUnless(132, (sender() == self.owner || sender() == myAddress()) && context().value >= self.seed * ton("0.08") + ton("1"));
 
-    repeat(min(110, self.seed)){
+    repeat(min(111, self.seed)){
       self.seed = self.seed - 1;
       nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
                       .storeInt(0, 3).storeAddress(self.nfts.get(self.seed)!!)

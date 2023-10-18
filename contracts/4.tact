@@ -46,21 +46,6 @@ contract Task4 with Deployable {
                         .storeAddress(msg.prevOwner).storeBool(false).storeCoins(0)
                         .storeSlice(emptySlice()).endCell())
                       .endCell(), 64);
-
-    /*send(SendParameters{
-      to: sender(),
-      value: 0,
-      mode: 64,
-      bounce: false,
-      body: Transfer{
-        queryId: msg.queryId,
-        newOwner: msg.prevOwner,
-        responseDestination: msg.prevOwner,
-        customPayload: null,
-        forwardAmount: 0,
-        forwardPayload: emptySlice()
-      }.toCell()
-    });*/
   }
 
   receive(msg: NftWithdrawal) {
@@ -74,20 +59,15 @@ contract Task4 with Deployable {
     self.owner = null;
     self.nftAddress = null;
 
-    send(SendParameters{
-      to: msg.nftAddress,
-      value: 0,
-      mode: 64,
-      bounce: false,
-      body: Transfer{
-        queryId: msg.queryId,
-        newOwner: sender(),
-        responseDestination: sender(),
-        customPayload: null,
-        forwardAmount: 0,
-        forwardPayload: emptySlice()
-      }.toCell()
-    });
+    nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
+                      .storeInt(0, 3).storeAddress(msg.nftAddress)
+                      .storeCoins(0).storeInt(0, 105).storeBool(false)
+                      .storeBool(true).storeRef(
+                          beginCell().storeUint(0x5fcc3d14, 32)
+                        .storeUint(msg.queryId, 64).storeAddress(sender())
+                        .storeAddress(sender()).storeBool(false).storeCoins(0)
+                        .storeSlice(emptySlice()).endCell())
+                      .endCell(), 64);
   }
 
   get fun time(): Int {

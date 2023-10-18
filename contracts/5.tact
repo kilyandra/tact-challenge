@@ -89,13 +89,10 @@ contract Task5 with Deployable {
   receive(msg: AdminWithdrawalProfit) {
     nativeThrowUnless(132, sender() == self.owner);
 
-    send(SendParameters{
-      to: self.owner,
-      value: myBalance() - ton("0.1"),
-      mode: 0,
-      bounce: false,
-      body: AdminFetchProfit{ queryId: msg.queryId }.toCell()
-    });
+    nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
+                      .storeInt(0, 3).storeAddress(sender())
+                      .storeCoins(0).storeInt(0, 105).storeBool(false)
+                      .storeBool(true).storeRef(beginCell().storeUint(msg.queryId, 64).endCell()).endCell(), 0);
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
@@ -118,11 +115,11 @@ contract Task5 with Deployable {
       self.nfts = emptyMap();
       return;
     }
-
+    
     send(SendParameters{
       to: myAddress(),
-      value: myBalance(),
-      mode: 0,
+      value: ton("1") + ton("0.08") * self.seed,
+      mode: 1,
       bounce: false,
       body: AdminWithdrawalAllNFTs{ queryId: msg.queryId }.toCell()
     });

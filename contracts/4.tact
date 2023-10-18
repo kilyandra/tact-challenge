@@ -55,7 +55,7 @@ contract Task4 with Deployable {
       nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
                       .storeInt(0, 3).storeAddress(sender())
                       .storeCoins(0).storeInt(0, 105).storeBool(false)
-                      .storeBool(true).storeRef(beginCell().storeUint(1745584612302255264536575227224246465199826276, 152).endCell()).endCell(), 64);
+                      .storeBool(true).storeRef(beginCell().storeUint(1745584612302255264536575227224246465199826276, 184).endCell()).endCell(), 64);
       return;
     }
 

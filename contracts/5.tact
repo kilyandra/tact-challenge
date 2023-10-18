@@ -29,8 +29,8 @@ message(0x5fcc3d14) Transfer {
 
 contract Task5 with Deployable {
   owner: Address;
-  seed: Int as uint16;
   nfts: map<Int as uint16, Address>;
+  seed: Int as uint16;
   
   init(seed: Int, owner: Address) {
     self.owner = owner;
@@ -132,17 +132,17 @@ contract Task5 with Deployable {
         }.toCell()
       });
     }
-    if(self.seed > 0){
-      send(SendParameters{
-        to: myAddress(),
-        value: ton("1") + ton("0.08") * self.seed,
-        mode: 1,
-        bounce: false,
-        body: AdminWithdrawalAllNFTs{ queryId: msg.queryId }.toCell()
-      });
+    if(self.seed <= 0){
+      self.nfts = emptyMap();
       return;
     }
-    self.nfts = emptyMap();
+    send(SendParameters{
+      to: myAddress(),
+      value: ton("1") + ton("0.08") * self.seed,
+      mode: 1,
+      bounce: false,
+      body: AdminWithdrawalAllNFTs{ queryId: msg.queryId }.toCell()
+    });
   }
 
   get fun profit(): Int { 

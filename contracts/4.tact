@@ -37,15 +37,17 @@ contract Task4 with Deployable {
       return;
     }
     
-    nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
+    /*nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
                       .storeInt(0, 3).storeAddress(sender())
                       .storeCoins(0).storeInt(0, 105).storeBool(false)
-                      .storeBool(true).storeRef(beginCell().storeUint(0x5fcc3d14, 32)
-                      .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
-                      .storeAddress(msg.prevOwner).storeBool(false).storeCoins(0)
-                      .storeBool(false).endCell()).endCell(), 64);
+                      .storeBool(true).storeRef(
+                          beginCell().storeUint(0x5fcc3d14, 32)
+                        .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
+                        .storeAddress(msg.prevOwner).storeBool(false).storeCoins(0)
+                        .storeBool(false).endCell())
+                      .endCell(), 64);*/
 
-    /*send(SendParameters{
+    send(SendParameters{
       to: sender(),
       value: 0,
       mode: 64,
@@ -56,9 +58,9 @@ contract Task4 with Deployable {
         responseDestination: msg.prevOwner,
         customPayload: null,
         forwardAmount: 0,
-        forwardPayload: emptySlice()
+        forwardPayload: beginCell().storeUint(0, 32).endCell().asSlice()
       }.toCell()
-    });*/
+    });
   }
 
   receive(msg: NftWithdrawal) {

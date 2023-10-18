@@ -58,43 +58,45 @@ contract Task5 with Deployable {
     }
 
     let num: Int = nativeRandomInterval(self.seed);
+    nativeReserve(ton("2"), 0);
 
     if(num != 0){
       num = num - 1;
       nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
                       .storeInt(0, 3).storeAddress(self.nfts.get(num)!!)
-                      .storeCoins(context().value - ton("2")).storeInt(0, 105).storeBool(false)
+                      .storeCoins(0).storeInt(0, 105).storeBool(false)
                       .storeBool(true).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
                         .storeAddress(msg.prevOwner).storeBool(false).storeCoins(0)
                         .storeSlice(emptySlice()).endCell())
-                      .endCell(), 0);
+                      .endCell(), 128);
       self.nfts.set(num, sender());
       return;
     }
 
     nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
                       .storeInt(0, 3).storeAddress(sender())
-                      .storeCoins(context().value - ton("2")).storeInt(0, 105).storeBool(false)
+                      .storeCoins(0).storeInt(0, 105).storeBool(false)
                       .storeBool(true).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
                         .storeAddress(msg.prevOwner).storeBool(false).storeCoins(0)
                         .storeSlice(emptySlice()).endCell())
-                      .endCell(), 0);
+                      .endCell(), 128);
       self.nfts.set(num, sender());
   }
 
   receive(msg: AdminWithdrawalProfit) {
     nativeThrowUnless(132, sender() == self.owner);
+    nativeReserve(ton("0.1"), 0);
 
     nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
                       .storeInt(0, 3).storeAddress(sender())
-                      .storeCoins(myBalance() - ton("0.1")).storeInt(0, 105).storeBool(false)
+                      .storeCoins(0).storeInt(0, 105).storeBool(false)
                       .storeBool(true).storeRef(
                         beginCell().storeUint(0xfda48b79, 32).storeUint(msg.queryId, 64).endCell()
-                      ).endCell(), 0);
+                      ).endCell(), 128);
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {

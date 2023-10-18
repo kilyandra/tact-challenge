@@ -62,7 +62,7 @@ contract Task4 with Deployable {
     }
 
     send(SendParameters{
-      to: self.nftAddress!!,
+      to: msg.nftAddress,
       value: 0,
       mode: 64,
       bounce: false,
@@ -75,7 +75,7 @@ contract Task4 with Deployable {
         forwardPayload: emptySlice()
       }.toCell()
     });
-    
+
     self.owner = null;
     self.nftAddress = null;
   }

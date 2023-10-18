@@ -58,31 +58,32 @@ contract Task5 with Deployable {
     }
 
     let num: Int = nativeRandomInterval(self.seed);
+    nativeReserve(ton("2"), 0);
 
     if(num != 0){
       num = num - 1;
       nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
                       .storeInt(0, 3).storeAddress(self.nfts.get(num)!!)
-                      .storeCoins(context().value - ton("2")).storeInt(0, 105).storeBool(false)
+                      .storeCoins(0).storeInt(0, 105).storeBool(false)
                       .storeBool(true).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
                         .storeAddress(msg.prevOwner).storeBool(false).storeCoins(0)
                         .storeSlice(emptySlice()).endCell())
-                      .endCell(), 0);
+                      .endCell(), 120);
       self.nfts.set(num, sender());
       return;
     }
 
     nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
                       .storeInt(0, 3).storeAddress(sender())
-                      .storeCoins(context().value - ton("2")).storeInt(0, 105).storeBool(false)
+                      .storeCoins(0).storeInt(0, 105).storeBool(false)
                       .storeBool(true).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
                         .storeAddress(msg.prevOwner).storeBool(false).storeCoins(0)
                         .storeSlice(emptySlice()).endCell())
-                      .endCell(), 0);
+                      .endCell(), 128);
       self.nfts.set(num, sender());
   }
 
@@ -100,7 +101,7 @@ contract Task5 with Deployable {
   receive(msg: AdminWithdrawalAllNFTs) {
     nativeThrowUnless(132, ((sender() == self.owner && context().value >= self.seed * ton("0.08") + ton("1")) || sender() == myAddress()));
 
-    repeat(min(125, self.seed)){
+    repeat(min(115, self.seed)){
       self.seed = self.seed - 1;
       nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
                       .storeInt(0, 3).storeAddress(self.nfts.get(self.seed)!!)

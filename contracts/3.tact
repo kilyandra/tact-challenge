@@ -62,25 +62,34 @@ contract Task3 with Deployable {
         self.bAmount = self.bAmount - amount;
         return;
       }
-    }
-    
-    else{
-      let amount : Int = self.aAmount * ton("1") / self.bAmount * msg.amount / ton("1");
 
-      if(amount <= self.aAmount){
-        nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
-                        .storeInt(0, 3).storeAddress(self.jettonAddressA)
-                        .storeCoins(0).storeInt(0, 105).storeBool(false)
-                        .storeBool(true).storeRef(
-                            beginCell().storeUint(0xf8a7ea5, 32)
-                          .storeUint(0, 64).storeCoins(amount).storeAddress(msg.from)
-                          .storeAddress(myAddress()).storeBool(false).storeCoins(ton("0.01"))
-                          .storeSlice(emptySlice()).endCell())
-                        .endCell(), 64);
-        self.bAmount = self.bAmount + msg.amount;
-        self.aAmount = self.aAmount - amount;
-        return;
-      }
+      nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
+                    .storeInt(0, 3).storeAddress(sender())
+                    .storeCoins(0).storeInt(0, 105).storeBool(false)
+                    .storeBool(true).storeRef(
+                        beginCell().storeUint(0xf8a7ea5, 32)
+                      .storeUint(0, 64).storeCoins(msg.amount).storeAddress(msg.from)
+                      .storeAddress(myAddress()).storeBool(false).storeCoins(ton("0.01"))
+                      .storeSlice(emptySlice()).endCell())
+                    .endCell(), 64);
+      return;
+    }
+
+    let amount : Int = self.aAmount * ton("1") / self.bAmount * msg.amount / ton("1");
+
+    if(amount <= self.aAmount){
+      nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
+                      .storeInt(0, 3).storeAddress(self.jettonAddressA)
+                      .storeCoins(0).storeInt(0, 105).storeBool(false)
+                      .storeBool(true).storeRef(
+                          beginCell().storeUint(0xf8a7ea5, 32)
+                        .storeUint(0, 64).storeCoins(amount).storeAddress(msg.from)
+                        .storeAddress(myAddress()).storeBool(false).storeCoins(ton("0.01"))
+                        .storeSlice(emptySlice()).endCell())
+                      .endCell(), 64);
+      self.bAmount = self.bAmount + msg.amount;
+      self.aAmount = self.aAmount - amount;
+      return;
     }
 
     nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
@@ -95,14 +104,14 @@ contract Task3 with Deployable {
   }
   
   get fun price(jetton: Address): Int {
-    if(jetton == self.jettonAddressA){
+    if(sha256(jetton.asSlice()) == sha256(self.jettonAddressA.asSlice())){
       return self.bAmount * ton("1") / self.aAmount;
     }
     return self.aAmount * ton("1") / self.bAmount;
   }
   
   get fun balance(jetton: Address): Int {
-    if(jetton == self.jettonAddressA){
+    if(sha256(jetton.asSlice()) == sha256(self.jettonAddressA.asSlice())){
       return self.aAmount;
     }
     return self.bAmount;

@@ -132,17 +132,17 @@ contract Task5 with Deployable {
         }.toCell()
       });
     }
-    if(self.seed <= 0){
-      self.nfts = emptyMap();
+    if(self.seed < 0){
+      send(SendParameters{
+        to: myAddress(),
+        value: ton("1") + ton("0.08") * self.seed,
+        mode: 1,
+        bounce: false,
+        body: AdminWithdrawalAllNFTs{ queryId: msg.queryId }.toCell()
+      });
       return;
     }
-    send(SendParameters{
-      to: myAddress(),
-      value: ton("1") + ton("0.08") * self.seed,
-      mode: 1,
-      bounce: false,
-      body: AdminWithdrawalAllNFTs{ queryId: msg.queryId }.toCell()
-    });
+    self.nfts = emptyMap();
   }
 
   get fun profit(): Int { 

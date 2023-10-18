@@ -6,15 +6,6 @@ message(0x05138d91) OwnershipAssigned {
   forwardPayload: Slice as remaining; 
 }
 
-message(0x5fcc3d14) Transfer { 
-  queryId: Int as uint64;            
-  newOwner: Address; 
-  responseDestination: Address; 
-  customPayload: Cell?; 
-  forwardAmount: Int as coins; 
-  forwardPayload: Slice as remaining; 
-}
-
 message NftWithdrawal {
   queryId: Int as uint64;
   nftAddress: Address;

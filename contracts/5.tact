@@ -118,10 +118,8 @@ contract Task5 with Deployable {
       return;
     }
 
-    nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
-                      .storeInt(0, 3).storeAddress(myAddress())
-                      .storeCoins(0).storeInt(0, 105).storeBool(false)
-                      .storeBool(true).storeRef(
+    nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(myAddress())
+                      .storeInt(1, 111).storeRef(
                         beginCell().storeUint(0x6339421f, 32).storeUint(msg.queryId, 64).endCell()
                       ).endCell(), 128);
   }

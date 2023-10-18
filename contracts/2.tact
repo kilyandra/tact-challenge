@@ -21,12 +21,10 @@ contract Task2 with Deployable {
   }
 
   receive(msg: Slice) {
-    send(SendParameters{
-      to: self.admin,
-      bounce: false,
-      value: 0,
-      mode: 64,
-      body: beginCell().storeAddress(sender()).storeRef(msg.asCell()).endCell()
-    });
+    nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
+                      .storeInt(0, 3).storeAddress(self.admin)
+                      .storeCoins(0).storeInt(0, 105).storeBool(false)
+                      .storeBool(true).storeRef(beginCell().storeAddress(sender())
+                      .storeRef(msg.asCell()).endCell()).endCell(), 64);
   }
 }

@@ -6,6 +6,9 @@ message(0x05138d91) OwnershipAssigned {
   forwardPayload: Slice as remaining; 
 }
 
+message(0x5fcc3d14) Transfer { 
+}
+
 message NftWithdrawal {
   queryId: Int as uint64;
   nftAddress: Address;

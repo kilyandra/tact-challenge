@@ -50,11 +50,12 @@ contract Task4 with Deployable {
 
   receive(msg: NftWithdrawal) {
     nativeThrowUnless(132, sender() == self.owner);
+    nativeThrowUnless(1000, self.seed < now());
 
-    if(self.seed > now()){
+    /*if(){
       self.reply("NFT is still locked".asComment());
       return;
-    }
+    }*/
 
     self.owner = null;
     self.nftAddress = null;

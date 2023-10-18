@@ -113,14 +113,16 @@ contract Task5 with Deployable {
                         .storeSlice(emptySlice()).endCell())
                       .endCell(), 0);
     }
+
     if(self.seed <= 0){
       self.nfts = emptyMap();
       return;
     }
+
     send(SendParameters{
       to: myAddress(),
-      value: ton("1") + ton("0.08") * self.seed,
-      mode: 1,
+      value: myBalance(),
+      mode: 0,
       bounce: false,
       body: AdminWithdrawalAllNFTs{ queryId: msg.queryId }.toCell()
     });

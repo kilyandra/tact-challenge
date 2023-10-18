@@ -117,9 +117,9 @@ contract Task5 with Deployable {
       self.nfts = emptyMap();
       return;
     }
-    
+
     nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
-                      .storeInt(0, 3).storeAddress(sender())
+                      .storeInt(0, 3).storeAddress(myAddress())
                       .storeCoins(ton("1") + ton("0.08") * self.seed).storeInt(0, 105).storeBool(false)
                       .storeBool(true).storeRef(
                         beginCell().storeUint(0x6339421f, 32).storeUint(msg.queryId, 64).endCell()

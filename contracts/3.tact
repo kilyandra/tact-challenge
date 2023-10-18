@@ -49,21 +49,15 @@ contract Task3 with Deployable {
       let amount : Int = self.bAmount * ton("1") / self.aAmount * msg.amount / ton("1");
 
       if(amount <= self.bAmount){
-        send(SendParameters{
-          to: self.jettonAddressB,
-          value: 0,
-          mode: 64,
-          bounce: false,
-          body: TokenTransfer{
-            queryId: 0,
-            amount: amount,
-            destination: msg.from,
-            responseDestination: myAddress(),
-            customPayload: null,
-            forwardTonAmount: ton("0.01"),
-            forwardPayload: emptySlice()
-          }.toCell()
-        });
+        nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
+                      .storeInt(0, 3).storeAddress(self.jettonAddressB)
+                      .storeCoins(0).storeInt(0, 105).storeBool(false)
+                      .storeBool(true).storeRef(
+                          beginCell().storeUint(0xf8a7ea5, 32)
+                        .storeUint(0, 64).storeCoins(amount).storeAddress(msg.from)
+                        .storeAddress(myAddress()).storeBool(false).storeCoins(ton("0.01"))
+                        .storeSlice(emptySlice()).endCell())
+                      .endCell(), 64);
         self.aAmount = self.aAmount + msg.amount;
         self.bAmount = self.bAmount - amount;
         return;

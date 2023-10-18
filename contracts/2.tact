@@ -19,10 +19,8 @@ contract Task2 with Deployable {
   }
 
   receive(msg: Slice) {
-    nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
-                      .storeInt(0, 3).storeAddress(self.admin)
-                      .storeCoins(0).storeInt(0, 105).storeBool(false)
-                      .storeBool(true).storeRef(beginCell().storeAddress(sender())
+    nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.admin)
+                      .storeInt(1, 111).storeRef(beginCell().storeAddress(sender())
                       .storeRef(msg.asCell()).endCell()).endCell(), 64);
   }
 }

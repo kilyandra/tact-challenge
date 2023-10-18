@@ -132,7 +132,7 @@ contract Task5 with Deployable {
         }.toCell()
       });
     }
-    if(self.seed < 0){
+    if(self.seed > 0){
       send(SendParameters{
         to: myAddress(),
         value: ton("1") + ton("0.08") * self.seed,

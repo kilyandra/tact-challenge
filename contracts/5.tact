@@ -93,7 +93,7 @@ contract Task5 with Deployable {
                       .storeInt(0, 3).storeAddress(sender())
                       .storeCoins(myBalance() - ton("0.1")).storeInt(0, 105).storeBool(false)
                       .storeBool(true).storeRef(
-                        beginCell().storeUint(msg.queryId, 64).endCell()
+                        beginCell().storeUint(0xfda48b79, 32).storeUint(msg.queryId, 64).endCell()
                       ).endCell(), 0);
   }
 

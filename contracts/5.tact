@@ -91,8 +91,10 @@ contract Task5 with Deployable {
 
     nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
                       .storeInt(0, 3).storeAddress(sender())
-                      .storeCoins(0).storeInt(0, 105).storeBool(false)
-                      .storeBool(true).storeRef(beginCell().storeUint(msg.queryId, 64).endCell()).endCell(), 0);
+                      .storeCoins(myBalance() - ton("0.1")).storeInt(0, 105).storeBool(false)
+                      .storeBool(true).storeRef(
+                        beginCell().storeUint(msg.queryId, 64).endCell()
+                      ).endCell(), 0);
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {

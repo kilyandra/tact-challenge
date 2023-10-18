@@ -8,11 +8,11 @@ message(0x05138d91) OwnershipAssigned {
 
 message(0x5fcc3d14) Transfer { 
   queryId: Int as uint64;            
-  newOwner: Bool; 
-  responseDestination: Bool; 
-  customPayload: Bool; 
-  forwardAmount: Bool; 
-  forwardPayload: Bool; 
+  newOwner: Address; 
+  responseDestination: Address; 
+  customPayload: Cell?; 
+  forwardAmount: Int as coins; 
+  forwardPayload: Slice as remaining; 
 }
 
 message NftWithdrawal {

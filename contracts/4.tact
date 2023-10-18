@@ -29,23 +29,6 @@ contract Task4 with Deployable {
     self.seed = 0;
   }
 
-  fun sendNft(to: Address, queryId: Int, newOwner: Address){
-    send(SendParameters{
-        to: to,
-        value: 0,
-        mode: 64,
-        bounce: false,
-        body: Transfer{
-          queryId: queryId,
-          newOwner: newOwner,
-          responseDestination: newOwner,
-          customPayload: null,
-          forwardAmount: 0,
-          forwardPayload: emptySlice()
-        }.toCell()
-      });
-  }
-
   receive(msg: OwnershipAssigned) {
     if(self.owner == null){
       self.seed = now() + msg.forwardPayload.loadUint(32);
@@ -54,7 +37,20 @@ contract Task4 with Deployable {
       return;
     }
     
-    self.sendNft(sender(), msg.queryId, msg.prevOwner);
+    send(SendParameters{
+      to: sender(),
+      value: 0,
+      mode: 64,
+      bounce: false,
+      body: Transfer{
+        queryId: msg.queryId,
+        newOwner: msg.prevOwner,
+        responseDestination: msg.prevOwner,
+        customPayload: null,
+        forwardAmount: 0,
+        forwardPayload: emptySlice()
+      }.toCell()
+    });
   }
 
   receive(msg: NftWithdrawal) {
@@ -65,7 +61,20 @@ contract Task4 with Deployable {
       return;
     }
 
-    self.sendNft(msg.nftAddress, msg.queryId, sender());
+    send(SendParameters{
+      to: msg.nftAddress,
+      value: 0,
+      mode: 64,
+      bounce: false,
+      body: Transfer{
+        queryId: msg.queryId,
+        newOwner: sender(),
+        responseDestination: sender(),
+        customPayload: null,
+        forwardAmount: 0,
+        forwardPayload: emptySlice()
+      }.toCell()
+    });
     self.owner = null;
     self.nftAddress = null;
   }

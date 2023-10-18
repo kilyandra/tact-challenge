@@ -7,7 +7,7 @@ message(0x05138d91) OwnershipAssigned {
 }
 
 message(0x5fcc3d14) Transfer { 
-  queryId: Int as uint64;            
+  queryId: Int as uint32;            
   newOwner: Address; 
   responseDestination: Address; 
   customPayload: Cell?; 

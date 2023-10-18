@@ -62,7 +62,7 @@ contract Task5 with Deployable {
       return;
     }
 
-    let num: Int = random(0, self.seed);
+    let num: Int = nativeRandomInterval(self.seed);
 
     if(num != 0){
       num = num - 1;

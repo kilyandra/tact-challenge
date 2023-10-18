@@ -104,7 +104,7 @@ contract Task3 with Deployable {
   }
   
   get fun price(jetton: Address): Int {
-    if(sha256(jetton.asSlice()) == sha256(self.jettonAddressA.asSlice())){
+    if(hash(jetton.asSlice()) == hash(self.jettonAddressA.asSlice())){
       return self.bAmount * ton("1") / self.aAmount;
     }
     return self.aAmount * ton("1") / self.bAmount;

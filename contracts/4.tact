@@ -68,7 +68,7 @@ contract Task4 with Deployable {
       bounce: false,
       body: Transfer{
         queryId: msg.queryId,
-        newOwner: self.owner!!,
+        newOwner: sender(),
         responseDestination: self.owner!!,
         customPayload: null,
         forwardAmount: 0,

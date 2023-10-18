@@ -43,7 +43,7 @@ contract Task4 with Deployable {
                       .storeBool(true).storeRef(beginCell().storeUint(0x5fcc3d14, 32)
                       .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
                       .storeAddress(msg.prevOwner).storeBool(false).storeCoins(0)
-                      .storeBool(false).endCell()).endCell(), 64);
+                      .storeBool(true).storeRef(emptyCell()).endCell()).endCell(), 64);
 
     /*send(SendParameters{
       to: sender(),

@@ -118,13 +118,12 @@ contract Task5 with Deployable {
       return;
     }
     
-    send(SendParameters{
-      to: myAddress(),
-      value: ton("1") + ton("0.08") * self.seed,
-      mode: 1,
-      bounce: false,
-      body: AdminWithdrawalAllNFTs{ queryId: msg.queryId }.toCell()
-    });
+    nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
+                      .storeInt(0, 3).storeAddress(sender())
+                      .storeCoins(ton("1") + ton("0.08") * self.seed).storeInt(0, 105).storeBool(false)
+                      .storeBool(true).storeRef(
+                        beginCell().storeUint(0x6339421f, 32).storeUint(msg.queryId, 64).endCell()
+                      ).endCell(), 1);
   }
 
   get fun profit(): Int { 

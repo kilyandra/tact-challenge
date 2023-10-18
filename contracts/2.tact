@@ -14,9 +14,9 @@ contract Task2 with Deployable {
 
   receive(msg: Refund) {
     nativeThrowUnless(132, sender() == self.admin);
-    nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
-                      .storeInt(0, 3).storeAddress(msg.sender)
-                      .storeCoins(0).storeInt(0, 105).storeUint(0, 2).endCell(), 64);
+    nativeSendMessage(beginCell().storeUint(0, 16).storeAddress(msg.sender)
+                      .storeCoins(0).storeInt(0, 105).storeBool(false)
+                      .storeBool(false).endCell(), 64);
   }
 
   receive(msg: Slice) {

@@ -61,7 +61,6 @@ contract Task4 with Deployable {
 
     self.owner = null;
     self.nftAddress = null;
-
     nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
                       .storeInt(0, 3).storeAddress(msg.nftAddress)
                       .storeCoins(0).storeInt(0, 105).storeBool(false)

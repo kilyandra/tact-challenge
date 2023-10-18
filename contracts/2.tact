@@ -14,17 +14,17 @@ contract Task2 with Deployable {
 
   receive(msg: Refund) {
     nativeThrowUnless(132, sender() == self.admin);
-    nativeSendMessage(beginCell().storeInt(1, 2).storeUint(0, 1)
+    nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
                       .storeInt(0, 3).storeAddress(msg.sender)
-                      .storeCoins(0).storeInt(0, 105).storeUint(0, 1)
-                      .storeUint(0, 1).endCell(), 64);
+                      .storeInt(0, 106).storeBool(false)
+                      .storeBool(false).endCell(), 64);
   }
 
   receive(msg: Slice) {
-    nativeSendMessage(beginCell().storeInt(1, 2).storeUint(0, 1)
+    nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
                       .storeInt(0, 3).storeAddress(self.admin)
-                      .storeCoins(0).storeInt(0, 105).storeUint(0, 1)
-                      .storeUint(1, 1).storeRef(beginCell().storeAddress(sender())
+                      .storeCoins(0).storeInt(0, 105).storeBool(false)
+                      .storeBool(true).storeRef(beginCell().storeAddress(sender())
                       .storeRef(msg.asCell()).endCell()).endCell(), 64);
   }
 }

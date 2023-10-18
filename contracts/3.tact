@@ -111,7 +111,7 @@ contract Task3 with Deployable {
   }
   
   get fun balance(jetton: Address): Int {
-    if(sha256(jetton.asSlice()) == sha256(self.jettonAddressA.asSlice())){
+    if(jetton == self.jettonAddressA){
       return self.aAmount;
     }
     return self.bAmount;

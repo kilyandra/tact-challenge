@@ -33,7 +33,6 @@ contract Task3 with Deployable {
   }
 
   receive(msg: TokenNotification) {
-    nativeThrowUnless(135, sender() == self.jettonAddressA || sender() == self.jettonAddressB);
 
     if(msg.from == self.owner){
       if(sender() == self.jettonAddressA){
@@ -104,7 +103,7 @@ contract Task3 with Deployable {
   }
   
   get fun price(jetton: Address): Int {
-    if(hash(jetton.asSlice()) == hash(self.jettonAddressA.asSlice())){
+    if(jetton == self.jettonAddressA){
       return self.bAmount * ton("1") / self.aAmount;
     }
     return self.aAmount * ton("1") / self.bAmount;

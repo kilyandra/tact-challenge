@@ -70,7 +70,7 @@ contract Task5 with Deployable {
                         .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
                         .storeAddress(msg.prevOwner).storeBool(false).storeCoins(0)
                         .storeSlice(emptySlice()).endCell())
-                      .endCell(), 120);
+                      .endCell(), 128);
       self.nfts.set(num, sender());
       return;
     }

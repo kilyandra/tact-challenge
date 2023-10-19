@@ -41,8 +41,7 @@ contract Task4 with Deployable {
                       .storeUint(1, 111).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
-                        .storeAddress(msg.prevOwner).storeUint(0, 5)
-                        .storeSlice(emptySlice()).endCell())
+                        .storeAddress(msg.prevOwner).storeUint(0, 5).endCell())
                       .endCell(), 64);
   }
 
@@ -61,8 +60,7 @@ contract Task4 with Deployable {
                       .storeUint(1, 111).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(sender())
-                        .storeAddress(sender()).storeUint(0, 5)
-                        .storeSlice(emptySlice()).endCell())
+                        .storeAddress(sender()).storeUint(0, 5).endCell())
                       .endCell(), 64);
   }
 

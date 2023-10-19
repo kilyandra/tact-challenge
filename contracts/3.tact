@@ -53,8 +53,7 @@ contract Task3 with Deployable {
                       .storeUint(1, 111).storeRef(
                           beginCell().storeUint(0xf8a7ea50000000000000000, 96)
                         .storeCoins(amount).storeAddress(msg.from)
-                        .storeAddress(myAddress()).storeUint(60331648, 29)
-                        .storeSlice(emptySlice()).endCell())
+                        .storeAddress(myAddress()).storeUint(60331648, 29).endCell())
                       .endCell(), 64);
         self.aAmount = self.aAmount + msg.amount;
         self.bAmount = self.bAmount - amount;
@@ -65,8 +64,7 @@ contract Task3 with Deployable {
                     .storeUint(1, 111).storeRef(
                         beginCell().storeUint(0xf8a7ea50000000000000000, 96)
                       .storeCoins(msg.amount).storeAddress(msg.from)
-                      .storeAddress(myAddress()).storeUint(60331648, 29)
-                      .storeSlice(emptySlice()).endCell())
+                      .storeAddress(myAddress()).storeUint(60331648, 29).endCell())
                     .endCell(), 64);
       return;
     }
@@ -78,8 +76,7 @@ contract Task3 with Deployable {
                       .storeUint(1, 111).storeRef(
                           beginCell().storeUint(0xf8a7ea50000000000000000, 96)
                         .storeCoins(amount).storeAddress(msg.from)
-                        .storeAddress(myAddress()).storeUint(60331648, 29)
-                        .storeSlice(emptySlice()).endCell())
+                        .storeAddress(myAddress()).storeUint(60331648, 29).endCell())
                       .endCell(), 64);
       self.bAmount = self.bAmount + msg.amount;
       self.aAmount = self.aAmount - amount;
@@ -90,8 +87,7 @@ contract Task3 with Deployable {
                     .storeUint(1, 111).storeRef(
                         beginCell().storeUint(0xf8a7ea50000000000000000, 96)
                       .storeCoins(msg.amount).storeAddress(msg.from)
-                      .storeAddress(myAddress()).storeUint(60331648, 29)
-                      .storeSlice(emptySlice()).endCell())
+                      .storeAddress(myAddress()).storeUint(60331648, 29).endCell())
                     .endCell(), 64);
   }
   

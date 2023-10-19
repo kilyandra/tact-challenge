@@ -49,8 +49,7 @@ contract Task5 with Deployable {
                       .storeInt(1, 111).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
-                        .storeAddress(msg.prevOwner).storeUint(0, 5)
-                        .storeSlice(emptySlice()).endCell())
+                        .storeAddress(msg.prevOwner).storeUint(0, 5).endCell())
                       .endCell(), 66);
       return;
     }
@@ -63,8 +62,7 @@ contract Task5 with Deployable {
                       .storeCoins(context().value - ton("2")).storeInt(1, 107).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
-                        .storeAddress(msg.prevOwner).storeUint(0, 5)
-                        .storeSlice(emptySlice()).endCell())
+                        .storeAddress(msg.prevOwner).storeUint(0, 5).endCell())
                       .endCell(), 0);
       self.nfts.set(num, sender());
       return;
@@ -74,8 +72,7 @@ contract Task5 with Deployable {
                       .storeCoins(context().value - ton("2")).storeInt(1, 107).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
-                        .storeAddress(msg.prevOwner).storeUint(0, 5)
-                        .storeSlice(emptySlice()).endCell())
+                        .storeAddress(msg.prevOwner).storeUint(0, 5).endCell())
                       .endCell(), 0);
       self.nfts.set(num, sender());
   }

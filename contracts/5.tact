@@ -28,29 +28,38 @@ message(0x5fcc3d14) Transfer {
 }
 
 contract Task5 with Deployable {
-  owner: Address;
-  seed: Int as uint16;
   nfts: map<Int as uint16, Address>;
-  
+  seed: Int as uint16;
+  owner: Int;
+
   init(seed: Int, owner: Address) {
-    self.owner = owner;
+    let a : Slice = owner.asSlice();
+    a.loadUint(11);
+    self.owner = a.loadUint(256);
     self.seed = 0;
   }
 
   receive(msg: OwnershipAssigned) {
-    if(msg.prevOwner == self.owner){
+    let a : Slice = sender().asSlice();
+    a.loadUint(11);
+    let b : Int = a.loadUint(256);
+
+    a = msg.prevOwner.asSlice();
+    a.loadUint(11);
+    let c : Int = a.loadUint(256);
+
+    if(c == self.owner){
       self.nfts.set(self.seed, sender());
       self.seed = self.seed + 1;
       return;
     }
     
     if(context().value < ton("2.1")){
-      nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(sender())
-                      .storeInt(1, 111).storeRef(
-                          beginCell().storeUint(0x5fcc3d14, 32)
-                        .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
-                        .storeAddress(msg.prevOwner).storeUint(0, 5).endCell())
-                      .endCell(), 66);
+      nativeSendMessage(beginCell().storeUint(33792, 17).storeUint(b, 256)
+                        .storeInt(1, 111).storeRef(beginCell().storeUint(0x5fcc3d14, 32)
+                        .storeUint(msg.queryId, 64).storeUint(1024, 11).storeUint(c, 256)
+                        .storeUint(1024, 11).storeUint(c, 256).storeUint(0, 5).endCell())
+                        .endCell(), 66);
       return;
     }
 
@@ -59,44 +68,55 @@ contract Task5 with Deployable {
     if(num != 0){
       num = num - 1;
       nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.nfts.get(num)!!)
-                      .storeCoins(context().value - ton("2")).storeInt(1, 107).storeRef(
-                          beginCell().storeUint(0x5fcc3d14, 32)
-                        .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
-                        .storeAddress(msg.prevOwner).storeUint(0, 5).endCell())
-                      .endCell(), 0);
+                        .storeCoins(context().value - ton("2")).storeInt(1, 107)
+                        .storeRef(beginCell().storeUint(0x5fcc3d14, 32).storeUint(msg.queryId, 64)
+                        .storeUint(1024, 11).storeUint(c, 256).storeUint(1024, 11)
+                        .storeUint(c, 256).storeUint(0, 5).endCell()).endCell(), 0);
       self.nfts.set(num, sender());
       return;
     }
 
-    nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(sender())
-                      .storeCoins(context().value - ton("2")).storeInt(1, 107).storeRef(
-                          beginCell().storeUint(0x5fcc3d14, 32)
-                        .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
-                        .storeAddress(msg.prevOwner).storeUint(0, 5).endCell())
-                      .endCell(), 0);
-    self.nfts.set(num, sender());
+    nativeSendMessage(beginCell().storeUint(33792, 17).storeUint(b, 256)
+                      .storeCoins(context().value - ton("2")).storeInt(1, 107)
+                      .storeRef(beginCell().storeUint(0x5fcc3d14, 32).storeUint(msg.queryId, 64)
+                      .storeUint(1024, 11).storeUint(c, 256).storeUint(1024, 11)
+                      .storeUint(c, 256).storeUint(0, 5).endCell()).endCell(), 0);
   }
 
   receive(msg: AdminWithdrawalProfit) {
-    nativeThrowUnless(132, sender() == self.owner);
+    let a : Slice = sender().asSlice();
+    a.loadUint(11);
+    let b : Int = a.loadUint(256);
 
-    nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(sender())
-                      .storeCoins(myBalance() - ton("0.1")).storeUint(1, 107).storeRef(
-                        beginCell().storeUint(0xfda48b79, 32).storeUint(msg.queryId, 64).endCell())
-                      .endCell(), 0);
+    nativeThrowUnless(132, b == self.owner);
+
+    nativeSendMessage(beginCell().storeUint(33792, 17).storeUint(b, 256)
+                      .storeCoins(myBalance() - ton("0.1")).storeUint(1, 107)
+                      .storeRef(beginCell().storeUint(0xfda48b79, 32).storeUint(msg.queryId, 64)
+                      .endCell()).endCell(), 0);
   }
 
   receive(msg: AdminWithdrawalAllNFTs) {
-    nativeThrowUnless(132, ((sender() == self.owner && context().value >= self.seed * ton("0.08") + ton("1")) || sender() == myAddress()));
-    let magic: Slice = beginCell().storeUint(0x202625A00000000000000000000000000001, 143).storeRef(
-                                  beginCell().storeUint(0x5fcc3d14, 32).storeUint(msg.queryId, 64)
-                                             .storeAddress(self.owner).storeAddress(self.owner)
-                                             .storeUint(0, 5).endCell()).endCell().asSlice();
+    let a : Slice = sender().asSlice();
+    a.loadUint(11);
+    let b : Int = a.loadUint(256);
+
+    let c : Slice = myAddress().asSlice();
+    c.loadUint(11);
+    let d : Int = c.loadUint(256);
+
+    nativeThrowUnless(132, ((b == self.owner && context().value >= self.seed * ton("0.08") + ton("1")) || b == d));
+    a = beginCell().storeUint(0x202625A00000000000000000000000000001, 143)
+                   .storeRef(beginCell().storeUint(0x5fcc3d14, 32).storeUint(msg.queryId, 64)
+                   .storeUint(1024, 11).storeUint(self.owner, 256).storeUint(1024, 11)
+                   .storeUint(self.owner, 256).storeUint(0, 5)
+                   .endCell()).endCell().asSlice();
 
     repeat(min(150, self.seed)){
       self.seed = self.seed - 1;
-      nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.nfts.get(self.seed)!!)
-                                   .storeSlice(magic).endCell(), 0);
+      nativeSendMessage(beginCell().storeUint(16, 6)
+                        .storeAddress(self.nfts.get(self.seed)!!)
+                        .storeSlice(a).endCell(), 0);
     }
 
     if(self.seed == 0){
@@ -104,11 +124,9 @@ contract Task5 with Deployable {
       return;
     }
 
-    nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(myAddress())
-                      .storeUint(1, 111).storeRef(
-                        beginCell().storeUint(0x6339421f, 32)
-                        .storeUint(msg.queryId, 64).endCell())
-                      .endCell(), 128);
+    nativeSendMessage(beginCell().storeUint(33792, 17).storeUint(d, 256)
+                      .storeUint(1, 111).storeRef(beginCell().storeUint(0x6339421f, 32)
+                      .storeUint(msg.queryId, 64).endCell()).endCell(), 128);
   }
 
   get fun profit(): Int { 

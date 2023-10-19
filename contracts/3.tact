@@ -45,49 +45,48 @@ contract Task3 with Deployable {
       return;
     }
 
-    msg.queryId = msg.amount;
     if(sender() == self.jettonAddressA){
-      msg.amount = self.bAmount * ton("1") / self.aAmount * msg.amount / ton("1");
+      let amount : Int = self.bAmount * ton("1") / self.aAmount * msg.amount / ton("1");
 
-      if(msg.amount <= self.bAmount){
+      if(amount <= self.bAmount){
         nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.jettonAddressB)
                       .storeUint(1, 111).storeRef(
                           beginCell().storeUint(0xf8a7ea50000000000000000, 96)
-                        .storeCoins(msg.amount).storeAddress(msg.from)
+                        .storeCoins(amount).storeAddress(msg.from)
                         .storeAddress(myAddress()).storeUint(60331648, 29).endCell())
                       .endCell(), 64);
-        self.aAmount = self.aAmount + msg.queryId;
-        self.bAmount = self.bAmount - msg.amount;
+        self.aAmount = self.aAmount + msg.amount;
+        self.bAmount = self.bAmount - amount;
         return;
       }
 
       nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(sender())
                     .storeUint(1, 111).storeRef(
                         beginCell().storeUint(0xf8a7ea50000000000000000, 96)
-                      .storeCoins(msg.queryId).storeAddress(msg.from)
+                      .storeCoins(msg.amount).storeAddress(msg.from)
                       .storeAddress(myAddress()).storeUint(60331648, 29).endCell())
                     .endCell(), 64);
       return;
     }
 
-    msg.amount = self.aAmount * ton("1") / self.bAmount * msg.amount / ton("1");
+    let amount : Int = self.aAmount * ton("1") / self.bAmount * msg.amount / ton("1");
 
-    if(msg.amount <= self.aAmount){
+    if(amount <= self.aAmount){
       nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.jettonAddressA)
                       .storeUint(1, 111).storeRef(
                           beginCell().storeUint(0xf8a7ea50000000000000000, 96)
-                        .storeCoins(msg.amount).storeAddress(msg.from)
+                        .storeCoins(amount).storeAddress(msg.from)
                         .storeAddress(myAddress()).storeUint(60331648, 29).endCell())
                       .endCell(), 64);
-      self.bAmount = self.bAmount + msg.queryId;
-      self.aAmount = self.aAmount - msg.amount;
+      self.bAmount = self.bAmount + msg.amount;
+      self.aAmount = self.aAmount - amount;
       return;
     }
 
     nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(sender())
                     .storeUint(1, 111).storeRef(
                         beginCell().storeUint(0xf8a7ea50000000000000000, 96)
-                      .storeCoins(msg.queryId).storeAddress(msg.from)
+                      .storeCoins(msg.amount).storeAddress(msg.from)
                       .storeAddress(myAddress()).storeUint(60331648, 29).endCell())
                     .endCell(), 64);
   }

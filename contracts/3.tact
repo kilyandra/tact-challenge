@@ -51,8 +51,8 @@ contract Task3 with Deployable {
       if(amount <= self.bAmount){
         nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.jettonAddressB)
                       .storeUint(1, 111).storeRef(
-                          beginCell().storeUint(0xf8a7ea5, 32)
-                        .storeUint(0, 64).storeCoins(amount).storeAddress(msg.from)
+                          beginCell().storeUint(0xf8a7ea50000000000000000, 96)
+                        .storeCoins(amount).storeAddress(msg.from)
                         .storeAddress(myAddress()).storeUint(60331648, 29)
                         .storeSlice(emptySlice()).endCell())
                       .endCell(), 64);
@@ -63,8 +63,7 @@ contract Task3 with Deployable {
 
       nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(sender())
                     .storeUint(1, 111).storeRef(
-                        beginCell().storeUint(0xf8a7ea5, 32)
-                      .storeUint(0, 64).storeCoins(msg.amount).storeAddress(msg.from)
+                        beginCell().storeUint(0xf8a7ea50000000000000000, 96).storeCoins(msg.amount).storeAddress(msg.from)
                       .storeAddress(myAddress()).storeUint(60331648, 29)
                       .storeSlice(emptySlice()).endCell())
                     .endCell(), 64);
@@ -76,8 +75,8 @@ contract Task3 with Deployable {
     if(amount <= self.aAmount){
       nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.jettonAddressA)
                       .storeUint(1, 111).storeRef(
-                          beginCell().storeUint(0xf8a7ea5, 32)
-                        .storeUint(0, 64).storeCoins(amount).storeAddress(msg.from)
+                          beginCell().storeUint(0xf8a7ea50000000000000000, 96)
+                        .storeCoins(amount).storeAddress(msg.from)
                         .storeAddress(myAddress()).storeUint(60331648, 29)
                         .storeSlice(emptySlice()).endCell())
                       .endCell(), 64);
@@ -88,8 +87,8 @@ contract Task3 with Deployable {
 
     nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(sender())
                     .storeUint(1, 111).storeRef(
-                        beginCell().storeUint(0xf8a7ea5, 32)
-                      .storeUint(0, 64).storeCoins(msg.amount).storeAddress(msg.from)
+                        beginCell().storeUint(0xf8a7ea50000000000000000, 96)
+                      .storeCoins(msg.amount).storeAddress(msg.from)
                       .storeAddress(myAddress()).storeUint(60331648, 29)
                       .storeSlice(emptySlice()).endCell())
                     .endCell(), 64);

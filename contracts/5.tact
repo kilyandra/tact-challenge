@@ -91,7 +91,7 @@ contract Task5 with Deployable {
                                       .storeAddress(self.owner).storeAddress(self.owner)
                                       .storeUint(0, 5).endCell().asSlice();
 
-    repeat(min(125, self.seed)){
+    repeat(min(150, self.seed)){
       self.seed = self.seed - 1;
       nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.nfts.get(self.seed)!!)
                       .storeUint(0x202625A00000000000000000000000000001, 143).storeRef(

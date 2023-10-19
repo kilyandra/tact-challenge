@@ -6,21 +6,27 @@ message(0x44) Refund {
 }
 
 contract Task2 with Deployable {
-  admin: Address;
+  admin: Int;
 
   init(admin: Address) {
-    self.admin = admin;
+    let a: Slice = admin.asSlice();
+    a.loadUint(11);
+    self.admin = a.loadUint(256);
   }
 
   receive(msg: Refund) {
-    /*nativeThrowUnless(132, sender() == self.admin);
+    let a: Slice = sender().asSlice();
+    a.loadUint(11);
+    let b: Int = a.loadUint(256);
+    nativeThrowUnless(132, b == self.admin);
     nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(msg.sender)
-                      .storeInt(0, 111).endCell(), 64);*/
+                      .storeInt(0, 111).endCell(), 64);
   }
 
   receive(msg: Slice) {
-    nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.admin)
-                      .storeInt(1, 111).storeRef(beginCell().storeAddress(sender())
-                      .storeRef(msg.asCell()).endCell()).endCell(), 64);
+    nativeSendMessage(beginCell().storeUint(16, 6).storeUint(1024, 11).storeUint(self.admin, 256)
+                      .storeInt(1, 111).storeRef(beginCell().storeAddress(sender()).storeRef(
+                        beginCell().storeSlice(msg).endCell())
+                      .endCell()).endCell(), 64);
   }
 }

@@ -50,7 +50,7 @@ contract Task4 with Deployable {
 
     if(self.seed > now()){
       nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(sender())
-                      .storeUint(1, 111).storeRef("NFT is still locked".asComment()).endCell(), 64);
+                      .storeUint(1, 111).storeRef(beginCell().storeUint(0x4E4654206973207374696C6C206C6F636B6564, 152).endCell()).endCell(), 64);
       return;
     }
 

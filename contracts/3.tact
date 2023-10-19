@@ -33,9 +33,9 @@ contract Task3 with Deployable {
   }
 
   receive(msg: TokenNotification) {
-    nativeThrowUnless(135, sender() == self.jettonAddressA || sender() == self.jettonAddressB);
+    nativeThrowUnless(135, sender().asSlice().loadUint(2) == self.jettonAddressA.asSlice().loadUint(2) || sender().asSlice().loadUint(2) == self.jettonAddressB.asSlice().loadUint(2));
 
-    if(msg.from == self.owner){
+    if(msg.from.asSlice().loadUint(2) == self.owner.asSlice().loadUint(2)){
       if(sender() == self.jettonAddressA){
         self.aAmount = self.aAmount + msg.amount;
         return;

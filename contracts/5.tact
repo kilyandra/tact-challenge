@@ -46,8 +46,7 @@ contract Task5 with Deployable {
 
     if(context().value < ton("2.1")){
       nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(sender())
-                      .storeCoins(0).storeInt(0, 105).storeBool(false)
-                      .storeBool(true).storeRef(
+                      .storeInt(1, 111).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
                         .storeAddress(msg.prevOwner).storeUint(0, 5)
@@ -61,8 +60,7 @@ contract Task5 with Deployable {
     if(num != 0){
       num = num - 1;
       nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.nfts.get(num)!!)
-                      .storeCoins(context().value - ton("2")).storeInt(0, 105).storeBool(false)
-                      .storeBool(true).storeRef(
+                      .storeCoins(context().value - ton("2")).storeInt(1, 107).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
                         .storeAddress(msg.prevOwner).storeUint(0, 5)
@@ -73,8 +71,7 @@ contract Task5 with Deployable {
     }
 
     nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(sender())
-                      .storeCoins(context().value - ton("2")).storeInt(0, 105).storeBool(false)
-                      .storeBool(true).storeRef(
+                      .storeCoins(context().value - ton("2")).storeInt(1, 107).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
                         .storeAddress(msg.prevOwner).storeUint(0, 5)
@@ -87,8 +84,7 @@ contract Task5 with Deployable {
     nativeThrowUnless(132, sender() == self.owner);
 
     nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(sender())
-                      .storeCoins(myBalance() - ton("0.1")).storeInt(0, 105).storeBool(false)
-                      .storeBool(true).storeRef(
+                      .storeCoins(myBalance() - ton("0.1")).storeInt(1, 107).storeRef(
                         beginCell().storeUint(0xfda48b79, 32).storeUint(msg.queryId, 64).endCell()
                       ).endCell(), 0);
   }
@@ -99,8 +95,7 @@ contract Task5 with Deployable {
     repeat(min(125, self.seed)){
       self.seed = self.seed - 1;
       nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.nfts.get(self.seed)!!)
-                      .storeCoins(ton("0.08")).storeInt(0, 105).storeBool(false)
-                      .storeBool(true).storeRef(
+                      .storeCoins(ton("0.08")).storeInt(1, 107).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(self.owner)
                         .storeAddress(self.owner).storeUint(0, 5)

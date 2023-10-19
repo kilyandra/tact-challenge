@@ -53,29 +53,30 @@ contract Task4 with Deployable {
   }
 
   receive(msg: NftWithdrawal) {
+    nativeThrowUnless(132, sender() == self.owner);
+
     let a : Slice = sender().asSlice();
     a.loadUint(11);
     let b : Int = a.loadUint(256);
 
-    a = (self.owner!!).asSlice();
-    a.loadUint(11);
-    let c : Int = a.loadUint(256);
-
-    nativeThrowUnless(132, b == c);
-
     if(self.seed > now()){
-      nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(sender())
+      nativeSendMessage(beginCell().storeUint(33792, 17).storeUint(b, 256)
                       .storeUint(1, 111).storeRef("NFT is still locked".asComment()).endCell(), 64);
       return;
     }
 
+    a = msg.nftAddress.asSlice();
+    a.loadUint(11);
+    let c : Int = a.loadUint(256);
+
+    nativeSendMessage(beginCell().storeUint(33792, 17).storeUint(c, 256)
+                      .storeUint(1, 111).storeRef(beginCell().storeUint(0x5fcc3d14, 32)
+                      .storeUint(msg.queryId, 64).storeUint(1024, 11).storeUint(c, 256)
+                      .storeUint(1024, 11).storeUint(c, 256).storeUint(0, 5).endCell())
+                      .endCell(), 64);
+    
     self.owner = null;
     self.nftAddress = null;
-    nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(msg.nftAddress)
-                      .storeUint(1, 111).storeRef(beginCell().storeUint(0x5fcc3d14, 32)
-                      .storeUint(msg.queryId, 64).storeAddress(sender())
-                      .storeAddress(sender()).storeUint(0, 5).endCell())
-                      .endCell(), 64);
   }
 
   get fun time(): Int {

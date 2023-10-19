@@ -98,8 +98,7 @@ contract Task5 with Deployable {
                       .storeUint(0x202625A00000000000000000000000000001, 143).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(self.owner)
-                        .storeAddress(self.owner).storeUint(0, 5)
-                        .storeSlice(emptySlice()).endCell())
+                        .storeAddress(self.owner).storeUint(0, 5).endCell())
                       .endCell(), 0);
     }
 

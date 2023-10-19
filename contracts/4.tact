@@ -40,7 +40,7 @@ contract Task4 with Deployable {
     nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(sender())
                       .storeUint(1, 111).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
-                        .storeUint(0, 64).storeAddress(msg.prevOwner)
+                        .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
                         .storeAddress(msg.prevOwner).storeUint(0, 5)
                         .storeSlice(emptySlice()).endCell())
                       .endCell(), 64);
@@ -60,7 +60,7 @@ contract Task4 with Deployable {
     nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(msg.nftAddress)
                       .storeUint(1, 111).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
-                        .storeUint(0, 64).storeAddress(sender())
+                        .storeUint(msg.queryId, 64).storeAddress(sender())
                         .storeAddress(sender()).storeUint(0, 5)
                         .storeSlice(emptySlice()).endCell())
                       .endCell(), 64);

@@ -95,7 +95,7 @@ contract Task5 with Deployable {
     repeat(min(125, self.seed)){
       self.seed = self.seed - 1;
       nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.nfts.get(self.seed)!!)
-                      .storeCoins(ton("0.08")).storeInt(1, 107).storeRef(
+                      .storeUint(616870912, 36).storeInt(1, 107).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(self.owner)
                         .storeAddress(self.owner).storeUint(0, 5)

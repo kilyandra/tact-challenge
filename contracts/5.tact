@@ -88,11 +88,11 @@ contract Task5 with Deployable {
   receive(msg: AdminWithdrawalAllNFTs) {
     nativeThrowUnless(132, ((sender() == self.owner && context().value >= self.seed * ton("0.08") + ton("1")) || sender() == myAddress()));
     let magic: Slice = beginCell().storeUint(0x202625A00000000000000000000000000001, 143).storeRef(
-                          beginCell().storeUint(0x5fcc3d14, 32).storeUint(msg.queryId, 64)
-                                     .storeAddress(self.owner).storeAddress(self.owner)
-                                     .storeUint(0, 5).endCell()).endCell().asSlice();
+                                  beginCell().storeUint(0x5fcc3d14, 32).storeUint(msg.queryId, 64)
+                                             .storeAddress(self.owner).storeAddress(self.owner)
+                                             .storeUint(0, 5).endCell()).endCell().asSlice();
 
-    repeat(min(150, self.seed)){
+    repeat(min(170, self.seed)){
       self.seed = self.seed - 1;
       nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.nfts.get(self.seed)!!)
                                    .storeSlice(magic).endCell(), 0);

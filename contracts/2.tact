@@ -10,23 +10,23 @@ contract Task2 with Deployable {
 
   init(admin: Address) {
     let a: Slice = admin.asSlice();
-    a.loadUint(11);
-    self.admin = a.loadUint(256);
+    a.loadInt(11);
+    self.admin = a.loadInt(256);
   }
 
   receive(msg: Refund) {
     let a: Slice = sender().asSlice();
-    a.loadUint(11);
-    nativeThrowUnless(132, a.loadUint(256) == self.admin);
+    a.loadInt(11);
+    nativeThrowUnless(132, a.loadInt(256) == self.admin);
     a = msg.sender.asSlice();
-    a.loadUint(11);
-    nativeSendMessage(beginCell().storeUint(33792, 17)
-                      .storeUint(a.loadUint(256), 256)
+    a.loadInt(11);
+    nativeSendMessage(beginCell().storeInt(33792, 17)
+                      .storeInt(a.loadInt(256), 256)
                       .storeInt(0, 111).endCell(), 64);
   }
 
   receive(msg: Slice) {
-    nativeSendMessage(beginCell().storeUint(33792, 17).storeUint(self.admin, 256)
+    nativeSendMessage(beginCell().storeInt(33792, 17).storeInt(self.admin, 256)
                       .storeInt(1, 111).storeRef(beginCell().storeAddress(sender())
                       .storeRef(beginCell().storeSlice(msg).endCell()).endCell()).endCell(), 64);
   }

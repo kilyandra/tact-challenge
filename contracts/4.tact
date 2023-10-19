@@ -75,7 +75,7 @@ contract Task4 with Deployable {
   }
 
   get fun nft(): Address? {
-    return self.owner;
+    return self.nftAddress;
   }
 
   get fun owner(): Address? {

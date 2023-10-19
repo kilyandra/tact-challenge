@@ -55,7 +55,7 @@ contract Task5 with Deployable {
 
     let num: Int = nativeRandomInterval(self.seed);
 
-    /*if(num != 0){
+    if(num != 0){
       num = num - 1;
       nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.nfts.get(num)!!)
                       .storeCoins(context().value - ton("2")).storeInt(1, 107).storeRef(
@@ -65,15 +65,15 @@ contract Task5 with Deployable {
                       .endCell(), 0);
       self.nfts.set(num, sender());
       return;
-    }*/
+    }
 
-    nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.nfts.get(num)!!)
+    nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(sender())
                       .storeCoins(context().value - ton("2")).storeInt(1, 107).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
                         .storeAddress(msg.prevOwner).storeUint(0, 5).endCell())
                       .endCell(), 0);
-    self.nfts.set(num, sender());
+      self.nfts.set(num, sender());
   }
 
   receive(msg: AdminWithdrawalProfit) {

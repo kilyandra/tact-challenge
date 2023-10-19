@@ -95,7 +95,7 @@ contract Task5 with Deployable {
     repeat(min(125, self.seed)){
       self.seed = self.seed - 1;
       nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.nfts.get(self.seed)!!)
-                      .storeUint(616870912, 36).storeInt(1, 107).storeRef(
+                      .storeUint(0x202625A00000000000000000000000000001, 143).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(self.owner)
                         .storeAddress(self.owner).storeUint(0, 5)
@@ -110,8 +110,9 @@ contract Task5 with Deployable {
 
     nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(myAddress())
                       .storeInt(1, 111).storeRef(
-                        beginCell().storeUint(0x6339421f, 32).storeUint(msg.queryId, 64).endCell()
-                      ).endCell(), 128);
+                        beginCell().storeUint(0x6339421f, 32)
+                        .storeUint(msg.queryId, 64).endCell())
+                      .endCell(), 128);
   }
 
   get fun profit(): Int { 

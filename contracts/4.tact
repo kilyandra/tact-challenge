@@ -37,11 +37,18 @@ contract Task4 with Deployable {
       return;
     }
     
-    nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(sender())
-                      .storeUint(1, 111).storeRef(
-                          beginCell().storeUint(0x5fcc3d14, 32)
-                        .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
-                        .storeAddress(msg.prevOwner).storeUint(0, 5).endCell())
+    let a : Slice = sender().asSlice();
+    a.loadInt(11);
+
+    let b : Slice = msg.prevOwner.asSlice();
+    b.loadInt(11);
+
+    let c : Int = b.loadInt(256);
+
+    nativeSendMessage(beginCell().storeInt(33792, 17).storeInt(a.loadInt(256), 256)
+                      .storeInt(1, 111).storeRef(beginCell().storeInt(0x5fcc3d14, 32)
+                      .storeInt(msg.queryId, 64).storeInt(1024, 11).storeInt(c, 256)
+                      .storeInt(1024, 11).storeInt(c, 256).storeInt(0, 5).endCell())
                       .endCell(), 64);
   }
 
@@ -57,10 +64,9 @@ contract Task4 with Deployable {
     self.owner = null;
     self.nftAddress = null;
     nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(msg.nftAddress)
-                      .storeUint(1, 111).storeRef(
-                          beginCell().storeUint(0x5fcc3d14, 32)
-                        .storeUint(msg.queryId, 64).storeAddress(sender())
-                        .storeAddress(sender()).storeUint(0, 5).endCell())
+                      .storeUint(1, 111).storeRef(beginCell().storeUint(0x5fcc3d14, 32)
+                      .storeUint(msg.queryId, 64).storeAddress(sender())
+                      .storeAddress(sender()).storeUint(0, 5).endCell())
                       .endCell(), 64);
   }
 
@@ -69,7 +75,7 @@ contract Task4 with Deployable {
   }
 
   get fun nft(): Address? {
-    return self.nftAddress;
+    return self.owner;
   }
 
   get fun owner(): Address? {

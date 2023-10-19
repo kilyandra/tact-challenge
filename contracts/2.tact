@@ -21,6 +21,6 @@ contract Task2 with Deployable {
   receive(msg: Slice) {
     nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.admin)
                       .storeInt(1, 111).storeRef(beginCell().storeAddress(sender())
-                      .storeRef(msg.asCell()).endCell()).endCell(), 64);
+                      .storeRef(beginCell().storeSlice(msg).endCell()).endCell()).endCell(), 64);
   }
 }

@@ -19,7 +19,7 @@ contract Task2 with Deployable {
     a.loadUint(11);
     let b: Int = a.loadUint(256);
     nativeThrowUnless(132, b == self.admin);
-    nativeSendMessage(beginCell().storeUint(16, 6).storeUint(1024, 11).storeUint(b, 256)
+    nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(msg.sender)
                       .storeInt(0, 111).endCell(), 64);
   }
 

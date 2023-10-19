@@ -17,8 +17,8 @@ contract Task2 with Deployable {
   receive(msg: Refund) {
     let a: Slice = sender().asSlice();
     a.loadUint(11);
-    a.loadUint(256);
-    nativeThrowUnless(132, a == self.admin);
+    let b: Int = a.loadUint(256);
+    nativeThrowUnless(132, b == self.admin);
     nativeSendMessage(beginCell().storeUint(33792, 17).storeUint(self.admin, 256)
                       .storeInt(0, 111).endCell(), 64);
   }

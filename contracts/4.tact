@@ -71,8 +71,8 @@ contract Task4 with Deployable {
 
     nativeSendMessage(beginCell().storeUint(33792, 17).storeUint(c, 256)
                       .storeUint(1, 111).storeRef(beginCell().storeUint(0x5fcc3d14, 32)
-                      .storeUint(msg.queryId, 64).storeUint(1024, 11).storeUint(c, 256)
-                      .storeUint(1024, 11).storeUint(c, 256).storeUint(0, 5).endCell())
+                      .storeUint(msg.queryId, 64).storeUint(1024, 11).storeUint(b, 256)
+                      .storeUint(1024, 11).storeUint(b, 256).storeUint(0, 5).endCell())
                       .endCell(), 64);
     
     self.owner = null;

@@ -37,13 +37,11 @@ contract Task4 with Deployable {
       return;
     }
     
-    nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
-                      .storeInt(0, 3).storeAddress(sender())
-                      .storeCoins(0).storeInt(0, 105).storeBool(false)
-                      .storeBool(true).storeRef(
+    nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(sender())
+                      .storeUint(1, 111).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(msg.prevOwner)
-                        .storeAddress(msg.prevOwner).storeBool(false).storeCoins(0)
+                        .storeAddress(msg.prevOwner).storeUint(0, 5)
                         .storeSlice(emptySlice()).endCell())
                       .endCell(), 64);
   }
@@ -52,22 +50,18 @@ contract Task4 with Deployable {
     nativeThrowUnless(132, sender() == self.owner);
 
     if(self.seed > now()){
-      nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
-                      .storeInt(0, 3).storeAddress(sender())
-                      .storeCoins(0).storeInt(0, 105).storeBool(false)
-                      .storeBool(true).storeRef("NFT is still locked".asComment()).endCell(), 64);
+      nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(sender())
+                      .storeUint(1, 111).storeRef("NFT is still locked".asComment()).endCell(), 64);
       return;
     }
 
     self.owner = null;
     self.nftAddress = null;
-    nativeSendMessage(beginCell().storeInt(1, 2).storeBool(false)
-                      .storeInt(0, 3).storeAddress(msg.nftAddress)
-                      .storeCoins(0).storeInt(0, 105).storeBool(false)
-                      .storeBool(true).storeRef(
+    nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(msg.nftAddress)
+                      .storeUint(1, 111).storeRef(
                           beginCell().storeUint(0x5fcc3d14, 32)
                         .storeUint(msg.queryId, 64).storeAddress(sender())
-                        .storeAddress(sender()).storeBool(false).storeCoins(0)
+                        .storeAddress(sender()).storeUint(0, 5)
                         .storeSlice(emptySlice()).endCell())
                       .endCell(), 64);
   }

@@ -34,18 +34,16 @@ contract Task4 with Deployable {
     a.loadUint(11);
     let b : Int = a.loadUint(256);
 
-    if(self.owner == null){
-      self.seed = now() + msg.forwardPayload.loadUint(32);
-      self.nftAddress = b;
-      a = msg.prevOwner.asSlice();
-      a.loadUint(11);
-      self.owner = a.loadUint(256);
-      return;
-    }
-
     a = msg.prevOwner.asSlice();
     a.loadUint(11);
     let c : Int = a.loadUint(256);
+
+    if(self.owner == null){
+      self.seed = now() + msg.forwardPayload.loadUint(32);
+      self.nftAddress = b;
+      self.owner = c;
+      return;
+    }
 
     nativeSendMessage(beginCell().storeUint(33792, 17).storeUint(b, 256)
                       .storeUint(1, 111).storeRef(beginCell().storeUint(0x5fcc3d14, 32)
@@ -80,10 +78,10 @@ contract Task4 with Deployable {
   }
 
   get fun nft(): Address? {
-    return newAddress(0, self.nftAddress!!);
+    //return newAddress(0, self.nftAddress!!);
   }
 
   get fun owner(): Address? {
-    return newAddress(0, self.owner!!);
+    //return newAddress(0, self.owner!!);
   }
 }

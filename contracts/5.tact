@@ -114,8 +114,10 @@ contract Task5 with Deployable {
 
     repeat(min(150, self.seed)){
       self.seed = self.seed - 1;
-      nativeSendMessage(beginCell().storeUint(16, 6)
-                        .storeAddress(self.nfts.get(self.seed)!!)
+      c = (self.nfts.get(self.seed)!!).asSlice();
+      c.loadUint(11);
+      nativeSendMessage(beginCell().storeUint(33792, 17)
+                        .storeUint(c.loadUint(256), 256)
                         .storeSlice(a).endCell(), 0);
     }
 

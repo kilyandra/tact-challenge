@@ -22,8 +22,8 @@ message NftWithdrawal {
 
 contract Task4 with Deployable {
   seed: Int as int32;
-  owner: Address?;
-  nftAddress: Address?;
+  owner: Int?;
+  nftAddress: Int?;
   
   init(seed: Int) {
     self.seed = 0;
@@ -32,8 +32,12 @@ contract Task4 with Deployable {
   receive(msg: OwnershipAssigned) {
     if(self.owner == null){
       self.seed = now() + msg.forwardPayload.loadUint(32);
-      self.owner = msg.prevOwner;
-      self.nftAddress = sender();
+      let a : Slice = msg.prevOwner.asSlice();
+      a.loadUint(11);
+      self.owner = a.loadUint(256);
+      a = sender().asSlice();
+      a.loadUint(11);
+      self.nftAddress = a.loadUint(256);
       return;
     }
     
@@ -53,26 +57,20 @@ contract Task4 with Deployable {
   }
 
   receive(msg: NftWithdrawal) {
-    nativeThrowUnless(132, sender() == self.owner);
-
     let a : Slice = sender().asSlice();
     a.loadUint(11);
-    let b : Int = a.loadUint(256);
+    nativeThrowUnless(132, a.loadUint(256) == self.owner!!);
 
     if(self.seed > now()){
-      nativeSendMessage(beginCell().storeUint(33792, 17).storeUint(b, 256)
+      nativeSendMessage(beginCell().storeUint(33792, 17).storeUint(self.owner!!, 256)
                       .storeUint(1, 111).storeRef("NFT is still locked".asComment()).endCell(), 64);
       return;
     }
 
-    a = msg.nftAddress.asSlice();
-    a.loadUint(11);
-    let c : Int = a.loadUint(256);
-
-    nativeSendMessage(beginCell().storeUint(33792, 17).storeUint(c, 256)
+    nativeSendMessage(beginCell().storeUint(33792, 17).storeUint(self.nftAddress!!, 256)
                       .storeUint(1, 111).storeRef(beginCell().storeUint(0x5fcc3d14, 32)
-                      .storeUint(msg.queryId, 64).storeUint(1024, 11).storeUint(b, 256)
-                      .storeUint(1024, 11).storeUint(b, 256).storeUint(0, 5).endCell())
+                      .storeUint(msg.queryId, 64).storeUint(1024, 11).storeUint(self.owner!!, 256)
+                      .storeUint(1024, 11).storeUint(self.owner!!, 256).storeUint(0, 5).endCell())
                       .endCell(), 64);
     
     self.owner = null;
@@ -84,10 +82,10 @@ contract Task4 with Deployable {
   }
 
   get fun nft(): Address? {
-    return self.nftAddress;
+    return newAddress(0, self.nftAddress!!);
   }
 
   get fun owner(): Address? {
-    return self.owner;
+    return newAddress(0, self.owner!!);
   }
 }

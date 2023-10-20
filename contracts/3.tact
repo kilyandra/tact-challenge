@@ -63,7 +63,7 @@ contract Task3 with Deployable {
     let f : Int = e.loadUint(256);
 
     if(b == self.jettonAddressA){
-      let amount : Int = self.bAmount * 1000000000 / self.aAmount * msg.amount / 1000000000;
+      let amount : Int = self.bAmount * ton("1") / self.aAmount * msg.amount / ton("1");
 
       if(amount <= self.bAmount){
         nativeSendMessage(beginCell().storeUint(33792, 17).storeUint(self.jettonAddressB, 256)
@@ -82,7 +82,7 @@ contract Task3 with Deployable {
       return;
     }
 
-    let amount : Int = self.aAmount * 1000000000 / self.bAmount * msg.amount / 1000000000;
+    let amount : Int = self.aAmount * ton("1") / self.bAmount * msg.amount / ton("1");
 
     if(amount <= self.aAmount){
       nativeSendMessage(beginCell().storeUint(33792, 17).storeUint(self.jettonAddressA, 256)
@@ -104,9 +104,9 @@ contract Task3 with Deployable {
     let a : Slice = jetton.asSlice();
     a.loadUint(11);
     if(a.loadUint(256) == self.jettonAddressA){
-      return self.bAmount * 1000000000 / self.aAmount;
+      return self.bAmount * ton("1") / self.aAmount;
     }
-    return self.aAmount * 1000000000 / self.bAmount;
+    return self.aAmount * ton("1") / self.bAmount;
   }
   
   get fun balance(jetton: Address): Int {

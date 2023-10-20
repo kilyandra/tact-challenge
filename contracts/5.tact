@@ -114,7 +114,7 @@ contract Task5 with Deployable {
                    .storeUint(self.owner, 256).storeUint(0, 5)
                    .endCell()).endCell().asSlice();
 
-    repeat(min(253, self.seed)){
+    repeat(min(254, self.seed)){
       self.seed = self.seed - 1;
       c = (self.nfts.get(self.seed)!!).asSlice();
       c.loadUint(11);

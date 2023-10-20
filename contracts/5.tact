@@ -67,7 +67,9 @@ contract Task5 with Deployable {
 
     if(num != 0){
       num = num - 1;
-      nativeSendMessage(beginCell().storeUint(16, 6).storeAddress(self.nfts.get(num)!!)
+      a = (self.nfts.get(num)!!).asSlice();
+      a.loadUint(11);
+      nativeSendMessage(beginCell().storeUint(33792, 17).storeUint(a.loadUint(256), 256)
                         .storeCoins(context().value - ton("2")).storeInt(1, 107)
                         .storeRef(beginCell().storeUint(0x5fcc3d14, 32).storeUint(msg.queryId, 64)
                         .storeUint(1024, 11).storeUint(c, 256).storeUint(1024, 11)

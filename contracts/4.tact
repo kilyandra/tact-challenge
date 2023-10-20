@@ -30,20 +30,18 @@ contract Task4 with Deployable {
   }
 
   receive(msg: OwnershipAssigned) {
-    if(self.owner == null){
-      self.seed = now() + msg.forwardPayload.loadUint(32);
-      let a : Slice = msg.prevOwner.asSlice();
-      a.loadUint(11);
-      self.owner = a.loadUint(256);
-      a = sender().asSlice();
-      a.loadUint(11);
-      self.nftAddress = a.loadUint(256);
-      return;
-    }
-    
     let a : Slice = sender().asSlice();
     a.loadUint(11);
     let b : Int = a.loadUint(256);
+
+    if(self.owner == null){
+      self.seed = now() + msg.forwardPayload.loadUint(32);
+      self.nftAddress = b;
+      a = msg.prevOwner.asSlice();
+      a.loadUint(11);
+      self.owner = a.loadUint(256);
+      return;
+    }
 
     a = msg.prevOwner.asSlice();
     a.loadUint(11);

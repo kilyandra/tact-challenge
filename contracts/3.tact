@@ -62,7 +62,7 @@ contract Task3 with Deployable {
     e.loadUint(11);
     let f : Int = e.loadUint(256);
 
-    if(d == self.jettonAddressA){
+    if(b == self.jettonAddressA){
       let amount : Int = self.bAmount * ton("1") / self.aAmount * msg.amount / ton("1");
 
       if(amount <= self.bAmount){

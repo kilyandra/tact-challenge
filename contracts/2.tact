@@ -26,8 +26,10 @@ contract Task2 with Deployable {
   }
 
   receive(msg: Slice) {
+    let a: Slice = sender().asSlice();
+    a.loadInt(11);
     nativeSendMessage(beginCell().storeInt(33792, 17).storeInt(self.admin, 256)
-                      .storeInt(1, 111).storeRef(beginCell().storeAddress(sender())
+                      .storeInt(1, 111).storeRef(beginCell().storeUint(1024, 11).storeUint(a.loadUint(256), 256)
                       .storeRef(beginCell().storeSlice(msg).endCell()).endCell()).endCell(), 64);
   }
 }

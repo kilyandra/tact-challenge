@@ -105,7 +105,7 @@ contract Task5 with Deployable {
     c.loadUint(11);
     let d : Int = c.loadUint(256);
 
-    nativeThrowUnless(132, ((b == self.owner && context().value >= self.seed * ton("0.08") + ton("1")) || b == d));
+    nativeThrowUnless(132, (b == d || (b == self.owner && context().value >= self.seed * ton("0.08") + ton("1"))));
     a = beginCell().storeUint(0x202625A00000000000000000000000000001, 143)
                    .storeRef(beginCell().storeUint(0x5fcc3d14, 32).storeUint(msg.queryId, 64)
                    .storeUint(1024, 11).storeUint(self.owner, 256).storeUint(1024, 11)
